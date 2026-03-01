@@ -1,0 +1,151 @@
+%============================ MAIN DOCUMENT ================================
+% define document class
+\documentclass[
+	a4paper               % paper format
+	open=any, % Chapters start on even and uneven pages, remove for print
+%	,10.5pt               % fontsize
+%	,BCOR=18mm            % Binding correction
+	,bibliography=totoc   % If enabled add bibliography to TOC
+	,listof=totoc         % If enabled add lists to TOC
+%	,bilingual
+	,monolingual
+]{bfhthesis}              % KOMA-script report
+
+% TExt styling
+\usepackage[
+	hidelinks,
+	pdfusetitle,
+]{hyperref}
+\usepackage{parskip}
+
+% to have a smaller document, compression of : fonts, page stream, sobject streams
+\pdfcompresslevel=9
+\pdfobjcompresslevel=3
+
+
+% to fix numbering of pages beeing cut at the bottom
+\usepackage[a4paper,includefoot,bottom=25mm,left=15mm,right=15mm,top=15mm]{geometry}
+\setlength{\footskip}{15mm}
+
+
+%table styles
+\usepackage{ltablex} % Combines longtable + tabularx
+\usepackage[table]{xcolor}
+\usepackage{tabularx,array,booktabs,multirow,graphicx,makecell}
+%\usepackage[margin=15mm]{geometry}
+\usepackage{ragged2e}
+\usepackage{longtable,booktabs,array}
+\usepackage{pdflscape}
+
+% Define column type for wrapped text
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
+% Komfort: zentrierte p-Spalte
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% for images which can be placed where they fit
+\usepackage{graphicx}
+\usepackage{float}
+
+% for style of sql text to show correct code highlighting
+\usepackage{listings}
+\usepackage{xcolor}
+\lstdefinestyle{sqlstyle}{
+  language=SQL,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  showstringspaces=false,
+  frame=single
+}
+
+% for cite different apearance
+\hypersetup{hidelinks=false, colorlinks=true}
+\hypersetup{
+  citecolor=blue!60!black,
+  linkcolor=black,
+  urlcolor=blue!60!black
+}
+
+
+% for 2 column itemized lists
+\usepackage{multicol}
+
+
+% for Pseudo codes
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
+\keepXColumns % ensures column widths stay consistent over pages
+
+% --- Farben (an die Grafik angelehnt) ---
+\definecolor{riskgreen}{HTML}{9AC88F}   % grün (low)
+\definecolor{riskyellow}{HTML}{FFF2A8}  % gelb
+\definecolor{riskorange}{HTML}{F4C37D}  % orange
+\definecolor{riskred}{HTML}{E06666}     % rot
+\definecolor{riskgrey}{HTML}{D9D9D9}    % Kopf-/Randgrau
+
+
+% glossaries and bibliography
+\usepackage{glossaries}
+\usepackage[backend=biber,style=authoryear]{biblatex}
+\addbibresource{MTE7101DataQuality.bib} %  JabRef-as bibliography GUI
+\makeglossaries
+\input{glossary}
+
+\begin{document}
+
+\frontmatter
+
+\title{Specialisation Project 1 MTE7101}
+\subtitle{Enhancing User Confidence in Report Timeliness and Data Accuracy through Data Quality and Availability Checks}
+\author{Roland Angelo Roccaro}
+\institution{Bern University of Applied Sciences}
+\department{School of Engineering and Computer Science}
+\institute{Master of Science in Engineering}
+\version{1.0}
+\titlegraphic{\includegraphics[width=\width]{./content/img/TitlePage_V1.png}}
+\advisor{Prof. Dr. Kenneth A. Ritley}
+%\coadvisor{Todo Mr. or Mrs. Undefined}
+\projectpartner{Swiss Post}
+%\expert{Todo Mr. or Mrs. Undefined}
+\degreeprogram{Master of Science MSc in Engineering: Profile Data Science}
+
+%----------------  BFH tile page   -----------------------------------------
+\maketitle
+
+% chapter and abstract imports as input
+
+
+\input{Abstract}
+
+
+%------------ TABLEOFCONTENTS ----------------
+\tableofcontents
+
+% optional:
+% \printglossary[type=\acronymtype,title={List of Acronyms}]
+
+
+
+%------------ START MAIN PART ----------------
+
+\mainmatter
+
+\input{content}
+
+\listoffigures
+\listoftables
+\addcontentsline{toc}{chapter}{Glossary}
+\printglossary[title={Glossary}]
+
+\printbibliography
+
+
+\appendix
+\input{Appendix}  
+
+\end{document}

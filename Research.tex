@@ -1,0 +1,192 @@
+\chapter{Topic of this research}
+This chapter creates the research foundation for the whole project. It first states the problem addressed and derives the research question. Based on this, the project’s SMART goals are defined to provide clear guidance for the following work. The chapter identifies the research gap that motivates all subsequent work. Finally, core definitions related to data quality and data availability are outlined to provide the theoretical basis for the analysis and implementation that follow.
+
+
+
+\section{Problem statement}
+\label{ResearchProblemState}
+The problem, as defined in the motivation \ref{IntroMotivation} is as follows: reporting at \gls{DWHLSOPS} does not have an automatic alerting system. The data quality and availability reporting at DWH LS OPS is in its infancy, both in regards to data quality as well as automation. This shows itself as: When reports are not executed or contain missing values, IT and the business are not automatically alerted. Due to the lack of automation, no data is gathered on the number of errors and outages.
+
+\subsection*{Business view of reporting}
+From the business and end user perspective, the effective reporting cannot be assured. Due to the missing automated checks, it cannot be guaranteed that the system contains complete data as expected on a specific day. The system could display only partial data, for example missing several hours, without informing users. As a result, the business needs to invest additional time to assure users that the report provides correct information.
+
+\subsection*{IT view of reporting}
+From the IT perspective, the systems cannot be effectively monitored because the knowledge of what should be monitored is missing. Only the business knows which rules define whether a dataset meets expectations. Therefore, it is very difficult for IT to set up data quality checks. The business is expected to document the expected standards or value ranges before automated checks can be implemented. However, IT also lacks expertise in defining and implementing data quality checks. Furthermore, responsibilities for data quality management within IT teams are not clearly defined. The same applies to data quality dimensions and to the question of when data quality checks should be performed.
+
+\subsection*{Business criticality of reporting}
+Due to the lack of automation, the business loses confidence in the new reporting. IT cannot react quickly when reports are not available, as the system does not inform them of missing or incomplete data. Since the checks are currently performed only manually, they cannot be scaled. If the business were required to extend the checks to additional \gls{infoblock}s, even more daily time would be needed to perform these checks. Infoblock is a Swiss Post internal term for data products, combining multiple sources of cleaned data into a complete source for reports including business names. The current situation is therefore not sustainable. From a financial perspective, the checks account for approximately 30 to 45 minutes per day, which results in 130.5 to 195.75 hours per year when calculated over 261 working days (365 days minus weekends, excluding public holidays for simplicity). At an estimated cost of 130 CHF per hour, this corresponds to annual costs of approximately 16'965 CHF to 25'447.50 CHF.
+
+\subsection*{Data reliability and lineage}
+Due to the lack of automated checks, it is not known how reliable the reports are. The necessary data to determine how often the reporting system fails to provide data, how often it provides incorrect data, and within which time range the data becomes available are currently missing. Moreover, documentation defining when data is considered correct is entirely lacking. As a result, the current situation requires improvement through the application of best practices, scientific research, and systematic documentation. The foundations for data lineage, data governance, and the definition of \gls{DQ} dimensions are not established and must be defined. Research into both the relevant data lineage and the reporting lineage therefore represents a key problem and a central research objective.
+
+\subsection*{Problem generalisation}
+When taking a step back from the very specific problem statement, it is observed that the problem is more generally known as missing formalisation. While initial steps towards running data quality checks with the report mentioned in the business criticality section have been initiated, the rules according to which data quality checks are to be executed, for example when data is considered acceptable or not, were not available at the start of this project. This also applies to the methods by which data quality should be measured, which are not defined. Furthermore, within IT it is not defined who is responsible for running these checks. This situation is a common problem occurring in data-driven companies that lack clear definitions of responsibilities for data quality management. Such definitions need to clarify who performs data quality checks, how data quality checks are performed, which dimensions are checked by data quality checks, and which data quality dimensions exist that could be assessed.
+
+
+
+\section{Research gap}
+\label{ResearchResearchGap}
+Given this problem statement, the following questions are to be researched in more detail within the next two chapters. First, a theoretical introduction of the terms is provided; in later chapters, their specific meaning in the context of this project is discussed:
+
+\begin{itemize}
+    \item \textbf{Data lineage}: Identification and documentation of relevant applications in the data flow from source to DWH
+    \item \textbf{Benefits of automation}: What are the benefits of automated data quality checks
+    \item \textbf{Scalability}: What are the benefits of scalability in DQM
+    \item \textbf{Separation of concerns}: How can teams benefit from separation of concerns
+    \item \textbf{Reusability across use cases}: Why reusability across use cases is a desired feature
+    \item \textbf{Reporting pipeline}: Identification and description of relevant reporting pipeline steps
+    \item \textbf{Business workload}: Analysis of current data quality reports performed by the business
+\end{itemize}
+
+\subsection*{Data lineage}
+Data lineage describes the full lifecycle of data. It answers the question of where data is generated, through which steps of storage, processing, augmentation, and associated IT systems it passes, until it arrives at the DWH. In the context of DQM, this serves as a list of steps at which issues can occur \cite{dama_dmbok}.
+
+\subsection*{Benefits of automation}
+In DQM, the automation of the process is an important step. Automation in DQM refers to having check tasks executed by automated systems without additional human interaction during execution or preparation. This is opposed to checks that require human interaction, such as manually combining data sources. Automation provides benefits such as consistency of execution, reduced human error, and repeatability of results \cite{iso9001_automation}.
+
+\subsection*{Scalability}
+Scalability is the measure of how well a process can be applied to a larger workload. If a process scales linearly with the number of tasks, it does not scale well. A process must either be optimised by reducing the cost per item as the number of processed items increases, or it must allow multiple processes to run in parallel, which may increase costs but keeps the waiting time for each process low. Scalability is essential for DQM because non-scalable checks lead to increased waiting times or disproportionately rising costs \cite{kleppmann_ddia}.
+
+\subsection*{Separation of concerns}
+The separation of concerns is the splitting the responsabilities and building separate components who perform different tasks. This is a design pattern especially valid in terms of DQM. Here this is the separation of business definition from execution of checks. But also having data consumption and validation separated. Finally, quality checks most be distinct from reporting logic. This separation will help to build reusable components beeing more generic rather than each check to be designed completely individually \cite{wikipedia_separation_of_concerns}.
+
+\subsection*{Reusability across use cases}
+Reusability across use cases is relevant to DQM, as the same checks are applied to multiple different datasets. For example, a check verifying that category A exceeds a defined threshold is conceptually similar to a check ensuring that category B remains below a defined threshold. When such checks can be reused across multiple use cases, less code needs to be written for each individual check. This is particularly useful in DQM, as similar checks are applied across many datasets, such as validations of date formats, email formats, or plausibility checks. This is a general concept in software engineering and therefore also applies to DQM in IT \cite{sommerville_software_engineering}.
+
+\subsection*{Reporting pipeline}
+\label{subsec:ResearchReportingPipeline}
+The reporting pipeline consists of the steps through which data passes from the DWH until it becomes consumable in a report. These steps are commonly referred to as the storage layer, the query and processing layer, and finally the reporting and consumption layer.
+The storage layer is the entry point into the DWH. It describes how data is initially stored, which may include different processing steps to bring the data into a clean structure. This may already be the case depending on the data source, for example when data is retrieved directly from another database. The second step is the query and processing layer, where data is structured to meet the requirements of specific reports. Queries and joins are used to shape the data according to report use cases, and this step may include additional processing, such as calculating aggregates that are required only temporarily for reporting purposes. The third step, the reporting and consumption layer, is where the data provided through the pipeline is made available to users. At this level, the data is displayed without further modification.
+Source: \cite{kimball_lifecycle_toolkit}
+
+\subsection*{Business workload}
+The business workload refers to the work that the business currently performs on a daily basis. It is most relevant to this project to understand what activities are carried out daily and how these can be replaced using automation. This gap forms the connection to the next steps to be performed in this and subsequent projects. An important aspect of this step is confirmation from the business that the analysed process is correctly documented and accurately reflects their use case.
+
+
+
+\section{High level research question}
+\label{ResearchResearchQuestion}
+What is the next meaningful step to take in order to improve \gls{DA} and \gls{DQ} within the \gls{DWHLSOPS} team at Swiss Post? How can the Business and IT be supported in achieving their objectives? While the solutions should be as simple as possible, they should be based on best practices and verified through scientific research. The research gap is addressed in the solution and implementation chapters. The main goal is to ensure that the conducted research provides tangible benefits to the team and contributes to future improvements. It is particularly important for the team that the research results are presented continuously, so that progress, as well as potential deviations and changes, can be discussed.
+
+
+
+\section{Success definition}
+\label{ResearchSuccessDefinition}
+The success criteria of this project are threefold and are defined based on the research gap as well as the initial project hand in, which describes the business requirements. 
+
+First, the primary business objective is to achieve automation for the existing report. However, the goal of this project is not to replace the report immediately, but rather to establish concrete steps toward automation. 
+
+Second, communication with the business is another important success factor. The results from research and implementation must be presented on a regular basis to the \gls{PO}. 
+
+Third, the documentation of the data lineage and the reporting pipeline is required, as it forms an important theoretical and practical foundation for future projects and further implementation of DQM.
+
+
+
+\section{Smart goals}
+\label{ResearchSmartGoals}
+The Goals of this project are now defined here as “\gls{SmartGoals}”, as shown in the following list. They are all \textbf{S}pecific: the goal is clearly formulated; \textbf{M}easurable: there are measurable criteria defining when the goal is reached; \textbf{A}chievable: they are realistic given the available resources; \textbf{R}elevant: the goal is directly linked to the project’s success; and \textbf{T}ime-bound: there is a defined timeframe for achievement.
+
+
+\begin{itemize}
+\item \textbf{1) Identification of initial data quality metrics}
+    
+\textbf{WHY:} This helps to ensure that checks focus on business-relevant issues.
+
+By the end of the analysis phase, the initial data quality measures suitable for automated projects in the DWH LS OPS environment are identified and defined. At least three dimensions should be covered, such as completeness and consistency.
+
+Success is measured by the documented metrics, which include a specific metric definition with calculation logic, data scope, and business relevance.
+
+
+
+\item \textbf{2) Investigation of IT systems for DQM metrics}
+
+\textbf{WHY:} To identify how to obtain the needed metrics, and to To define what DQM means in measurable terms.To define what DQM means in measurable terms.
+
+By the end of the analysis phase, the IT systems and data stores are investigated, and it is defined where quality metrics can be implemented, stored, and evaluated within the DWH LS OPS environment.
+
+Success is measured by a documented system overview that maps the selected metric to its technical source, storage location, and execution context. This is to be validated with IT stakeholders.
+
+ 
+\item \textbf{3) Investigation of data lineage for metrics}
+
+\textbf{WHY:} To apply DQM checks to the correct data sources and enable root cause analysis.
+
+By the end of the analysis phase, investigate and document the data lineage from data ingestion to the reporting layer.
+
+Success is measured by a documented lineage description that allows data to be followed through the system and its transformations to be understood, including the validation possibilities available to responsible stakeholders.
+
+
+\item \textbf{4) Design and testing of an automated DQM algorithm}
+
+\textbf{WHY:} To verify that DQM checks are the appropriate ones and that they can be automated reliably before full implementation.
+
+By the end of the implementation phase, at least one algorithm that automates a selected DQM check based on defined metrics is designed and tested.
+
+Success is measured by a reproducible implementation and successful execution of the automated check based on the defined metrics.
+
+\item \textbf{5) Implementation and validation of an automated DQM check}
+
+\textbf{WHY:} Not only to To demonstrate that the solution works in practice and can reduce manual DQM effort, but to serve as a first-step in a further expansion of DQM automation.
+
+By the end of the implementation phase, the automated DQM check for the selected use case is implemented and validated based on the designed algorithm and its metrics.
+
+Success is measured by successful execution of the check on productive, representative test data, including documented results across multiple runs and stakeholder confirmation that the check reliably identifies DQM issues without manual intervention.
+
+
+\end{itemize}
+
+
+
+\section{What are data quality checks?}
+\label{ResearchWhatIsDQ}
+People using the same data can often be in disagreement about what \gls{DQ} means for that data \cite{DQwikipedia}. Data quality can be defined as data being of high quality when it correctly represents the real-world construct it refers to, making it fit for decision-making and planning. To establish a common understanding of data quality, official frameworks have been defined \cite{enwikiISO8000}. These frameworks have specific characteristics, as described here.
+
+\subsection*{Rule based}
+A data quality check tests data against rules, expectations, or thresholds and thereby attempts to detect issues. If issues are identified, they are not corrected by the data quality check itself but are instead made visible.
+
+\subsection*{Use case driven}
+The type of check applied depends on the use case and business context. Data quality checks must be purposeful for the specific use case and are explicitly defined. For example, a threshold may be defined with an exact value, such as the parcel width being a maximum of one meter on automatic sorting machines.
+
+\subsection*{Manual and automated checks}
+Data quality can be assessed manually or through automated checks; both approaches are valid. A manual check is performed by skilled staff and requires their full attention during execution. It includes multiple steps, such as gathering data from different sources and performing aggregations. This makes manual checks slow and difficult to scale; however, they are flexible and can be adapted quickly to changes. In contrast, automated checks are performed by systems on a defined schedule without staff intervention. They are therefore repeatable and deliver consistent results. A manual check can be used to verify data quality once; however, when checks need to be repeated regularly, they should be automated.
+
+\subsection*{Dimensions}
+Data quality is measured across multiple dimensions such as:
+\begin{itemize}
+    \item \textbf{Completeness}: When mandatory fields are present, data is considered complete
+    \item \textbf{Accuracy}: How closely the data reflects the real world
+    \item \textbf{Consistency}: Whether the same data is consistent across systems
+    \item \textbf{Timeliness}: Whether the data is available when it is needed or only at a later time
+\end{itemize}
+This is only a subset of dimensions that can be considered in data quality checks. These dimensions have, however, already been defined at Swiss Post. Therefore, their further definition is not useful and is not part of this project \cite{iso_iec_25012}.
+
+\subsection*{Detection and correction}
+In \gls{DQM} detection and correction of errors is strictly different. In this project, the focus is on the detection of data quality issues. The correction of these issues is out of scope of this work.
+
+\subsection*{Checks on data lifecycle}
+\label{ResearchDataQChecksOnDataLifecycle}
+The placement of data quality checks on the data lineage and reporting pipeline is an important decision in the process. The different stages are data ingestion or generation, storage and staging, processing and transformation, and reporting and consumption. Running data quality checks at the ingestion level provides only limited checking possibilities, such as structural validity and schema compliance. At the storage and staging level, consistency, deduplication, and format correctness can be checked. Moving further to the processing and transformation stage, checks on joins and aggregations can be performed, as well as plausibility checks of derived values. On the reporting layer, cross report consistency can be checked. In general, checks on earlier layers are more limited, while the processing and transformation layer allows the most meaningful and effective checks.
+
+
+
+\section{What are data availability checks?}
+\label{ResearchWhatIsDA}
+A \gls{DA} check verifies that a defined dataset exists, whether it is available on time, and whether it is accessible. Such checks are binary: the dataset is either available or not.
+
+\subsection*{Distinction to data quality checks}
+While a data quality check evaluates the correctness of data, a data availability check determines whether the data is available. Data can therefore be available but incorrect, or correct but unavailable. For example, data may be available for a report at 07:00, which is the required availability time, but the delivered data may be incorrect. Conversely, the same report could be available at 07:15 with correct data; however, it would not be available within the defined time frame.
+
+\subsection*{Temporal dependency}
+Data availability is always time dependent. Data can be available at the defined time or not. This requires clear definitions of which data must be available and at what time. In order to check temporal availability, the relevant timeframe must be defined. For example, a report may need to be available at 07:00. However, the data used by this report may be expected earlier, for instance at 06:30. Thus, the same data can have different temporal expectations regarding when it can first be expected and when it reaches its deadline. For every temporal check, these deadlines need to be defined.
+
+\subsection*{Availability and accessibility}
+Data can be available but not accessible at the same time. The data and the complete report may exist and be correct; however, a user who requires it may not be able to access it. This can occur due to missing or incorrect access rights. Other scenarios are also possible, such as data being generated initially but not transferred at a later step of the data lineage. In such cases, the raw data is available at an earlier stage but not accessible at the final stage. This can be caused by errors in the pipeline as well as by system outages.
+
+\subsection*{Expectation values}
+An expectation check compares whether data is available in defined amounts, time windows, or other specified criteria. For example, at 09:00, nine tons of coal are expected to be in stock. This type of check includes both the expected amount and the defined time window.
+
+\subsection*{Business impact}
+When data is unavailable at the defined moment, this causes business disruptions. The severity of the disruption is proportional to the importance of the missing data and the duration of the delay.
+
+\subsection*{Checks on data lifecycle}
+When implementing \gls{DA} checks, the same question arises as with \gls{DQ}: at which stage it is most efficient to implement them. For data availability checks, the general rule is that earlier is better. If data is not available at the ingestion stage, all subsequent steps depending on it will also fail. When checks are performed on the storage layer after ingestion, the presence of data in the DWH can be verified. If an earlier data availability check was successful, an issue at the transport or DWH level can be identified. When moving further up to the processing and transformation layers and finally to the reporting and consumption layers, the check becomes highly visible, as a report is either present or not. However, this only allows identification of whether users experience an issue, not where it originates. Overall, earlier data availability checks yield better results for IT when identifying errors and correcting them.
