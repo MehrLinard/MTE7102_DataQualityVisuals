@@ -1,0 +1,61 @@
+\section{SMART goal 1, Setup of a improved DQM report}
+In project one, the base work researching the reporting pipeline was performed. It provided the data lineage and described the underlying issues. With this data, an improved report was developed. Research was conducted regarding how to better highlight the relevant comparisions and help the users see the information even faster. Additionally the third party datasource which is still copied daily into a excel file recieved improvements. The file was moved to sharepoint and is now updated on change to \gls{AWSS3} where it is made available to \gls{athena}. In addition to that the data selected recieved a change in it's structure.
+
+\subsection*{Update of data source}
+The Excel was updated from beeing copied to a shared folder to sharepoint.
+Sharepoint allowed to use an existing interface Sharepoint to AWS.
+This allowed to use the same interface also for the existing report in SAC, this setup was however done by another member of the ASTV team
+
+\subsection*{Setup of Power BI}
+State that for Power BI a setup existed already. This setup had to be used, however also allowing to use all existing infrastructure. Benefitting from prework of the DWH LS OPS Team which defined. 
+
+\subsubsection*{Setup}
+Describe the setuo for Power BI
+\subsubsection*{Report Definition}
+The report was overtaken..
+
+\subsubsection*{New View Athena}
+The Star Shema needed another view...
+
+\subsubsection*{Initial Data Setup}
+Issues with the Setup of the report
+I first built everything local
+However this did not work online..
+Had no proper Chain of checkins
+Had to redo the setup,
+But now deployed it more often to find out if eventually one specific issue renders the data non usable
+
+\subsubsection*{Initial Data Setup}
+Describe that first only 1 query
+Then 2 queries and combine them...
+However later with the aggregation table...
+Another data source was to be added, the semantic model
+
+
+
+\subsubsection*{New visuals to help faster visual data reception by stakeholders}
+However decision taken to use 3 visuals
+1 visual using trafic lights , green orange red, also using different colors
+2 using a line chart to show eventual recuring or increasing issues
+3 using the existing table view of SAC but reinforcing the data with the trafic lights same as the trafic light visual
+
+\subsubsection*{Waiting for finishing of aggregation}
+-> To Solution LandScape
+Technical limits due to data amount
+pragmatic setup aggregating some values 
+while some details are only availale as direct query (slower)
+
+\subsubsection*{Input from stakeholders}
+Input from team...
+You need to use a data model
+You need to move measures into a measure table
+You should have filters differently
+Use a table for dates, link it to every other date
+same for PLZ
+-> Rendering the Joined Key PLZ+Date non Needed
+
+\subsubsection*{Requirement to rebuild the data model}
+If available show the changes to the data model
+
+\subsubsection*{Final Version of the Report}
+Show how the final version looks
