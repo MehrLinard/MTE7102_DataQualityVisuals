@@ -4,20 +4,31 @@ In project one, the base work researching the reporting pipeline was performed. 
 \subsection*{Update of data source}
 The Excel was updated from beeing copied to a shared folder to sharepoint.
 Sharepoint allowed to use an existing interface Sharepoint to AWS.
+
 This allowed to use the same interface also for the existing report in SAC, this setup was however done by another member of the ASTV team
 
 \subsection*{Setup of Power BI}
 State that for Power BI a setup existed already. This setup had to be used, however also allowing to use all existing infrastructure. Benefitting from prework of the DWH LS OPS Team which defined. 
 
 \subsubsection*{Setup}
-Describe the setuo for Power BI
+This setup consists of already predefined templates defining areas such as reporting color groups, regions for filters, how permissions for the reports are handled.
+Furthermore the setup included definitions how to deploy reports and how to handle the AWS Athena data sources. Thus the setup was conducted as defined by post.
+
 \subsubsection*{Report Definition}
-The report was overtaken..
+The setup of the report was initially overtaken from the analysed report in \gls{SAC}, this decision was taken as the data which had to be checked remained the same. Therefore also the method the business followed stayed the same, and the first tests to get the data into Power BI returned the data in the same way.
+
 
 \subsubsection*{New View Athena}
-The Star Shema needed another view...
+While the data source remained largely the same, the data lineage changed slightly. Business and IT decided in late 2025 that the data should be consumed as a star schema to improve performance compared to the existing wide table. Consequently, the \gls{DQM} dashboard for message processing needed to follow this change in the data source. In order not to disturb the previous report, the data had to be gathered into a separate view in \gls{athena}. The separate view was also required in order to validate the new star schema infoblocks rather than those of the previous wide table. Thus, separating the views was necessary to maintain clean, high performing code.
+
+Todo... link to the query..
+
+
 
 \subsubsection*{Initial Data Setup}
+
+Due to this report beeing the first one developed by the project team, the first tries were performed locally without deploying the report to \gls{microsoftFabric}. 
+As such first report, the abundance of ways how to achieve e.g. links between datasources naturally lead to a report setup which performed some tasks double. Such as linking the two data sources using \gls{mQuery} and \gls{dax}.
 Issues with the Setup of the report
 I first built everything local
 However this did not work online..
