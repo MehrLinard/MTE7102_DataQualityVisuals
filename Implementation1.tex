@@ -1,40 +1,67 @@
-\section{SMART goal 1, Setup of a improved DQM report}
-In project one, the base work researching the reporting pipeline was performed. It provided the data lineage and described the underlying issues. With this data, an improved report was developed. Research was conducted regarding how to better highlight the relevant comparisions and help the users see the information even faster. Additionally the third party datasource which is still copied daily into a excel file recieved improvements. The file was moved to sharepoint and is now updated on change to \gls{AWSS3} where it is made available to \gls{athena}. In addition to that the data selected recieved a change in it's structure.
+\section{SMART Goal 1: Setup of an Improved DQM Report}
+
+In Project 1, the groundwork for researching the reporting pipeline was completed. It provided the data lineage and described the underlying issues. Based on this work, an improved report was developed. Research was conducted on how to better highlight the relevant comparisons and help users identify the information more quickly. Additionally, the third-party data source, which was previously copied daily into an Excel file, was improved. The file was moved to SharePoint and is now updated whenever changes are made to \gls{AWSS3}, where it is made available to \gls{athena}. In addition, the selected data underwent a structural change.
 
 \subsection*{Update of data source}
-The Excel was updated from beeing copied to a shared folder to sharepoint.
-Sharepoint allowed to use an existing interface Sharepoint to AWS.
 
-This allowed to use the same interface also for the existing report in SAC, this setup was however done by another member of the ASTV team
+The first step towards the new report was to improve one of the data sources used by the report. Part of the data was retrieved from a third-party system by means of an Excel table. The file resided in a shared folder and was not initially archived. As this data source did not change and was required by both the existing SAC report, which had to remain operational, and the new Power BI report, it had to be made available in a way that was accessible to both tools. Changing from a shared folder, which was not accessible to Power BI, to SharePoint was therefore a major improvement, as it added versioning to the file. Furthermore, the \gls{DWHLSOPS} team has an existing method to transfer .csv data from SharePoint to \gls{athena}.
+
+Therefore, the destination of the Excel file was updated in collaboration with the business users responsible for the manual maintenance of the Excel file. With this change in place, the first data source was made available to Power BI and all versions of it were from now on stored on S3.
+
+
+
+Todo:
+Show link to guides
+Show issues that happened during transfer
+The excel was not an xlsx but xls
 
 \subsection*{Setup of Power BI}
-State that for Power BI a setup existed already. This setup had to be used, however also allowing to use all existing infrastructure. Benefitting from prework of the DWH LS OPS Team which defined. 
+
+Regarding the Power BI setup, Swiss Post has already defined DevOps pipelines, setup guides, and documentation supporting the installation of the application and the required infrastructure, for example, for using \gls{athena} as a data source.
 
 \subsubsection*{Setup}
-This setup consists of already predefined templates defining areas such as reporting color groups, regions for filters, how permissions for the reports are handled.
-Furthermore the setup included definitions how to deploy reports and how to handle the AWS Athena data sources. Thus the setup was conducted as defined by post.
+
+This setup consists of predefined templates defining areas such as report colour schemes, regions for filters, and how permissions for the reports are handled. Furthermore, the setup includes definitions of how to deploy reports and how to handle AWS Athena data sources. Thus, the setup was carried out as defined by Swiss Post \cite{SwissPost2026_PowerBIIntro,SwissPost2026_PBITemplate,SwissPost2026_PowerBIConfluence}.
+
 
 \subsubsection*{Report Definition}
-The setup of the report was initially overtaken from the analysed report in \gls{SAC}, this decision was taken as the data which had to be checked remained the same. Therefore also the method the business followed stayed the same, and the first tests to get the data into Power BI returned the data in the same way.
+
+The initial report setup was adopted from the analysed SAC report, as the data that had to be checked remained the same. Therefore, the method followed by the business also remained unchanged, and the first tests of loading the data into Power BI produced the data in the same way.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./content/img/PowerBI_Start_SAC_Like.png}
+    \caption{Initial Power BI report designed to resemble the existing SAC report}
+    \label{fig:powerbi_start_sac_like}
+\end{figure}
+
+
 
 
 \subsubsection*{New View Athena}
-While the data source remained largely the same, the data lineage changed slightly. Business and IT decided in late 2025 that the data should be consumed as a star schema to improve performance compared to the existing wide table. Consequently, the \gls{DQM} dashboard for message processing needed to follow this change in the data source. In order not to disturb the previous report, the data had to be gathered into a separate view in \gls{athena}. The separate view was also required in order to validate the new star schema infoblocks rather than those of the previous wide table. Thus, separating the views was necessary to maintain clean, high performing code.
 
-Todo... link to the query..
+While the data source remained largely the same, the data lineage changed slightly. Business and IT decided in late 2025 that the data should be consumed as a star schema to improve performance compared to the existing wide table. Consequently, the \gls{DQM} dashboard for message processing needed to follow this change in the data source. In order not to disturb the previous report, the data had to be gathered into a separate view in Athena. The separate view was also required in order to validate the new star schema \gls{infoblock}s rather than those of the previous wide table. Thus, separating the views was necessary to maintain clean, high-performing code, as adding the new query parts for the star schema to the wide table query would have slowed the query down and intertwined two different use cases.
 
+TODO
+Note : This into Solution design
+Steps using DevOps Process at Post:
+In order to use the given
 
+All views are represented by GitHub repositories, which are separated into NonProd and Prod environments. In both environments, the developer creates a branch from the main branch. Within this branch, a file named after the view is created, and the SQL statement defining the view is added to the file.
+
+The full query for the new view can be found in Appendix \ref{newStarShemaDQMquery}.
 
 \subsubsection*{Initial Data Setup}
 
-Due to this report beeing the first one developed by the project team, the first tries were performed locally without deploying the report to \gls{microsoftFabric}. 
-As such first report, the abundance of ways how to achieve e.g. links between datasources naturally lead to a report setup which performed some tasks double. Such as linking the two data sources using \gls{mQuery} and \gls{dax}.
-Issues with the Setup of the report
-I first built everything local
-However this did not work online..
-Had no proper Chain of checkins
-Had to redo the setup,
-But now deployed it more often to find out if eventually one specific issue renders the data non usable
+As this was the first report developed by the project team, the initial implementation was carried out locally without deploying the report to \gls{microsoftFabric}. As a first report, the variety of available approaches for implementing features such as links between data sources naturally led to a report setup that performed some tasks twice, for example linking the two data sources using both \gls{mQuery} and \gls{dax}. These deficiencies of the initial implementation were cleaned out trough out the further implementation steps of the report. 
+
+
+\subsubsection*{Differences Between Local and Cloud}
+
+Once the linkage of the two data sources was working and the data was displayed in the same way as in the SAC report, the Power BI report was published to the cloud. However, the report showed issues when loading data from \gls{athena}. Power BI automatically applied a transformation that attempted to cast a column containing date values into a date format. This resulted in issues with empty values.
+
+According to the initial research using Copilot, the issue could be resolved in Athena. However, discussions with the wider \gls{DWHLSOPS} team showed that similar issues had occurred for other team members. Therefore, before making changes in Athena, the possible solutions identified by the team were investigated. After consulting the team and checking the view in Athena, it became clear that the issue did not originate in Athena and therefore could not be resolved there. As the tests showed that the query ran correctly in Athena, the issue had to be located in the report. Since no proper checkpoints had been established up to this point, it was not possible to determine at which stage the applied data transformations caused the issue. Therefore, the report had to be recreated, and after each transformation, a test deployment was performed to verify that the data loaded and was displayed correctly in the cloud version.
+
 
 \subsubsection*{Initial Data Setup}
 Describe that first only 1 query
