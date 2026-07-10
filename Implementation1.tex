@@ -60,14 +60,28 @@ As this was the first report developed by the project team, the initial implemen
 
 Once the linkage of the two data sources was working and the data was displayed in the same way as in the SAC report, the Power BI report was published to the cloud. However, the report showed issues when loading data from \gls{athena}. Power BI automatically applied a transformation that attempted to cast a column containing date values into a date format. This resulted in issues with empty values.
 
-According to the initial research using Copilot, the issue could be resolved in Athena. However, discussions with the wider \gls{DWHLSOPS} team showed that similar issues had occurred for other team members. Therefore, before making changes in Athena, the possible solutions identified by the team were investigated. After consulting the team and checking the view in Athena, it became clear that the issue did not originate in Athena and therefore could not be resolved there. As the tests showed that the query ran correctly in Athena, the issue had to be located in the report. Since no proper checkpoints had been established up to this point, it was not possible to determine at which stage the applied data transformations caused the issue. Therefore, the report had to be recreated, and after each transformation, a test deployment was performed to verify that the data loaded and was displayed correctly in the cloud version.
+According to the initial research using \gls{copilot}, the issue could be resolved in Athena. However, discussions with the wider \gls{DWHLSOPS} team showed that similar issues had occurred for other team members. Therefore, before making changes in Athena, the possible solutions identified by the team were investigated. After consulting the team and checking the view in Athena, it became clear that the issue did not originate in Athena and therefore could not be resolved there. As the tests showed that the query ran correctly in Athena, the issue had to be located in the report. Since no proper checkpoints had been established up to this point, it was not possible to determine at which stage the applied data transformations caused the issue. Therefore, the report had to be recreated, and after each transformation, a test deployment was performed to verify that the data loaded and was displayed correctly in the cloud version.
 
 
-\subsubsection*{Initial Data Setup}
-Describe that first only 1 query
-Then 2 queries and combine them...
-However later with the aggregation table...
-Another data source was to be added, the semantic model
+\subsubsection*{Model Data Setup}
+After the initial data from the \gls{SAC} report were integrated, the model contained information from two tables based from AWS. However for the further checks more data sources had to be included. Thus the datamodel had to be refined not connecting the tables trough \gls{mQuery} and \gls{dax} but rather in the data model view.
+Initially only two tables had to be matched trough the postal codes and dates. This new model setup was a requirement by the team same as having the measures in Power BI separated in a table.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/PowerBI_DataModel_Initial.png}
+    \caption{Initial Power BI data model containing the core tables required for the first report prototype}
+    \label{fig:powerbi_data_model_initial}
+\end{figure}
+
+The datamodel was increased towards the end of this SMART goal, linking the full data model used by the business. This was mandatory to perform the last check comparing the infoblock data at \gls{athena} with the \gls{aggregationTable} in Power BI.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/PowerBI_DataModel_Final.png}
+    \caption{Final Power BI data model after integrating additional data sources, calculated tables, and supporting information}
+    \label{fig:powerbi_data_model_final}
+\end{figure}
 
 
 
