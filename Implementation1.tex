@@ -36,21 +36,6 @@ The initial report setup was adopted from the analysed SAC report, as the data t
 \end{figure}
 
 
-
-
-\subsubsection*{New View Athena}
-
-While the data source remained largely the same, the data lineage changed slightly. Business and IT decided in late 2025 that the data should be consumed as a star schema to improve performance compared to the existing wide table. Consequently, the \gls{DQM} dashboard for message processing needed to follow this change in the data source. In order not to disturb the previous report, the data had to be gathered into a separate view in Athena. The separate view was also required in order to validate the new star schema \gls{infoblock}s rather than those of the previous wide table. Thus, separating the views was necessary to maintain clean, high-performing code, as adding the new query parts for the star schema to the wide table query would have slowed the query down and intertwined two different use cases.
-
-TODO
-Note : This into Solution design
-Steps using DevOps Process at Post:
-In order to use the given
-
-All views are represented by GitHub repositories, which are separated into NonProd and Prod environments. In both environments, the developer creates a branch from the main branch. Within this branch, a file named after the view is created, and the SQL statement defining the view is added to the file.
-
-The full query for the new view can be found in Appendix \ref{newStarShemaDQMquery}.
-
 \subsubsection*{Initial Data Setup}
 
 As this was the first report developed by the project team, the initial implementation was carried out locally without deploying the report to \gls{microsoftFabric}. As a first report, the variety of available approaches for implementing features such as links between data sources naturally led to a report setup that performed some tasks twice, for example linking the two data sources using both \gls{mQuery} and \gls{dax}. These deficiencies of the initial implementation were cleaned out trough out the further implementation steps of the report. 
@@ -122,3 +107,37 @@ In total the report has been updated to this full view. Encompassig the 3 visual
     \caption{Final Power BI dashboard integrating all implemented data quality visualisations}
     \label{fig:powerbi_final_dashboard}
 \end{figure}
+
+
+\subsubsection*{New View Athena}
+To highlight some of the testing and improvement loops during the development of the report, here an example regarding the datasources. During testing the business pointed out that small differences in number of events were occuring between the new report on PowerBI and the datasource it should monitor. This was reported during a meeting of the project staff and the product owner of the \gls{ASTV} team. The error was reported by the product owner, and pointed out that the new Power BI report was still using the old data source.
+While the data source remained largely the same, the data lineage changed slightly. Business and IT decided in late 2025 that he data should be consumed as a star schema to improve performance compared to the existing wide table. Consequently, the \gls{DQM} dashboard for message processing needed to follow this change in the data source. In order not to disturb the previous report, the data had to be gathered into a separate view in Athena. The separate view was also required in order to validate the new star schema \gls{infoblock}s rather than those of the previous wide table. Thus, separating the views was necessary to maintain clean, high-performing code, as adding the new query parts for the star schema to the wide table query would have slowed the query down and intertwined two different use cases. 
+
+\subsubsection*{DevOps process}
+After the error with the new view was reported, the DevOps process was started.
+To create a new view:
+The developer has to first test the query for the new view in \glks{athena}, confirming its valid. 
+Then they navigate to GitHub.com, selecting the corresponding repository for the account used
+Next they have to create a new branch and create a file with the create view sql code
+After this a build is atempted, in case it is successful the process continues else one has to return to step one and fix the issue
+On successful build a pull request can be created merging the new branch
+Once this was successful 
+The full query for the new view can be found in Appendix \ref{newStarShemaDQMquery}.
+
+
+Ich würde den Ablauf so beschreiben:
+
+Ein Bug wird festgestellt: Der falsche (nicht Star-Schema-)Infoblock wird verwendet.
+Deshalb wird eine neue Query benötigt.
+Die bestehende View darf nicht verändert werden; stattdessen wird eine neue View erstellt.
+Für diese View wird zunächst eine neue Query entwickelt und getestet.
+Nach erfolgreichem Test wird die neue View erstellt.
+Parallel erfolgt die technische Umsetzung über den DevOps-Prozess:
+Git-Branch erstellen
+Deployment auf Dev
+erfolgreicher Build → Merge
+Deployment auf Production
+Build + Approval → Merge
+Nach der Bereitstellung wird im Power-BI-Report eine neue Tabelle eingebunden.
+Anschließend werden neue DAX-Formeln erstellt.
+Zum Schluss werden die bisherigen Measures durch die neuen ersetzt.
