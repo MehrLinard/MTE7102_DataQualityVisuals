@@ -1,4 +1,4 @@
-\section{SMART Goal 1: Setup of an Improved DQM Report}
+\section{SMART goal 1: Setup of an Improved DQM Report}
 
 In Project 1, the groundwork for researching the reporting pipeline was completed. It provided the data lineage and described the underlying issues. Based on this work, an improved report was developed. Research was conducted on how to better highlight the relevant comparisons and help users identify the information more quickly. Additionally, the third-party data source, which was previously copied daily into an Excel file, was improved. The file was moved to SharePoint and is now updated whenever changes are made to \gls{AWSS3}, where it is made available to \gls{athena}. In addition, the selected data underwent a structural change.
 
@@ -86,28 +86,39 @@ The datamodel was increased towards the end of this SMART goal, linking the full
 
 
 \subsubsection*{New visuals to help faster visual data reception by stakeholders}
-However decision taken to use 3 visuals
-1 visual using trafic lights , green orange red, also using different colors
-2 using a line chart to show eventual recuring or increasing issues
-3 using the existing table view of SAC but reinforcing the data with the trafic lights same as the trafic light visual
 
-\subsubsection*{Waiting for finishing of aggregation}
--> To Solution LandScape
-Technical limits due to data amount
-pragmatic setup aggregating some values 
-while some details are only availale as direct query (slower)
+As the task in this SMART goal was not to only copy the existing report but improve it. The content should be made more visual and easier to capture. Thus only having one table with all data would not improve the situation. However, according to the defined checks from Project one, the threshholds were known. These threshholds allow to show warnings. Thus the report was split into three different views.
+1. having the previous details with the full information in daily counts per event
+2. a board with traffic lights showing if the values are valid
+3. a Linechart which allows to see the development of values
 
-\subsubsection*{Input from stakeholders}
-Input from team...
-You need to use a data model
-You need to move measures into a measure table
-You should have filters differently
-Use a table for dates, link it to every other date
-same for PLZ
--> Rendering the Joined Key PLZ+Date non Needed
 
-\subsubsection*{Requirement to rebuild the data model}
-If available show the changes to the data model
+1. The table shows the data per event and center counted per day. This allows the business to confirm completeness according to the absolute values. The table has been improved with the same traffic lights which show green or red according to defined treshholds
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/PowerBI_Table.png}
+    \caption{Power BI table visualising daily event counts and data quality indicators}
+    \label{fig:powerbi_table}
+\end{figure}
+2. The said traffic lights are showing the 4 checks in green or red. For every check the values are compared, if they are below 1\% difference and and at least 10'000 events. This allows the users to quikly percieve if the latest values are ok reducing the time required to get an idea if further checks are needed or everything is ok
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/PowerBI_TrafficLights.png}
+    \caption{Power BI traffic light indicators summarising the four data quality checks}
+    \label{fig:powerbi_traffic_lights}
+\end{figure}
+3. The Line chart allows the users to see if recuring paterns in the data occur. e.g. if on every friday or monday errors are occuring. The center line shows the 0\% errors and the dashed lines show the threshholds of 1\% errors. The 4 colored lines indicate the different events.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/PowerBI_LineChart.png}
+    \caption{Power BI line chart showing historical data quality trends}
+    \label{fig:powerbi_line_chart}
+\end{figure}
 
-\subsubsection*{Final Version of the Report}
-Show how the final version looks
+In total the report has been updated to this full view. Encompassig the 3 visuals and the header which allows filtering over all visuals e.g. only the data of specific weekdays, date ranges or even selecting defined sorting centers.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/PowerBI_Final_Report.png}
+    \caption{Final Power BI dashboard integrating all implemented data quality visualisations}
+    \label{fig:powerbi_final_dashboard}
+\end{figure}
