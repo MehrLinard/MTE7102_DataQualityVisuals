@@ -51,6 +51,81 @@ As defined in the code used, the teraform locals were setting which queries were
     ]
 \end{lstlisting}
 
+\subsection*{Code execution testing}
+After the resources have been created using teraform, the codes execution could be manually tested. This is done by loggin into the \gls{awsConsole}, logging into the right account and then selecting the \gls{awsEventBridge}. The newly cfreated schedule here, is showing the required payload for the next step in testing, the payload is see at the bottom of the following screen, followed by the detail json code  extracted and copied as input for the linked \gls{awsLambda}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/Amazon_EventBridge_Detail.png}
+    \caption{Amazon EventBridge console showing the scheduled monitoring rule and the corresponding JSON event payload configuration}
+    \label{fig:amazon_eventbridge_detail}
+\end{figure}
+
+
+\begin{lstlisting}[language=json,
+caption={AWS EventBridge event payload used to trigger the data quality monitoring workflow},
+label={lst:eventbridge_payload}]
+{
+  "database": "curated_lsops",
+  "queries": [
+    {
+      "table": "sendungsverarbeitung_dqm_starschema_no_aggregation_small_v",
+      "where_clause": [
+        {
+          "column": "locationKey",
+          "operation": "=",
+          "value": "HRK"
+        },
+        {
+          "column": "relevant_submitted",
+          "operation": "=",
+          "value": 1
+        },
+        {
+          "column": "Posttag",
+          "operation": "=",
+          "value": "current_date - interval '35' day"
+        }
+      ]
+    },
+    {
+      "table": "curated_lsops_submitted_daily_dqm"
+    }
+  ]
+}
+\end{lstlisting}
+
+
+After the execution of the Lambda and execution error was observed which is shown below. After investigating this error, it became clear that the condition the team injected into the sql was not valid. The base data monitoring code would change the sql condition checking for minus 35 day to be escaped so that the sql is not executed properly. After discussion with the AWS modernisation team, this bug was worked on by the consultants.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/AWS_Lambda_debugg_info.png}
+    \caption{AWS Lambda execution details showing debug information after a failed execution of the data quality monitoring function}
+    \label{fig:aws_lambda_debug_info}
+\end{figure}
+
+After they resolved the bug, the data monitoring now allowed to enter a date range for the count as seen in the following figure.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/AWS_Monitoring_Improvements.png}
+    \caption{Successful execution of the monitoring workflow after correcting the configuration, showing the validated monitoring metrics being forwarded to the AWS monitoring pipeline}
+    \label{fig:aws_monitoring_improvements}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+In this file
+
 Was das Diagramm erklärt
 
 Der Prozess beginnt mit den Entwicklungswerkzeugen:
