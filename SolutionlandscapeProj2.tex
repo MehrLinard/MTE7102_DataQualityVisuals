@@ -1,2 +1,74 @@
 
-\section{Project 2 MTE7102 Bla}
+\section{Report visualisations and evaluations}
+After the basic solution landscape this project now dives deeper into the more specific context of report visualisations and evaluation of automatisation.
+
+\subsection*{Power BI}
+
+At Swiss Post in the environment of the \gls{DWHLSOPS}, \gls{PowerBI} is the set business intelligence tool. It is to replace the currently used tools over time. The main reasons for this shift are the lower license cost in comparision with the previous \gls{SAC} and furthermore it has performed faster in direct comparision tests with its predesessor. Therefore, Power BI served as BI tool in this project, as it is specifically replacing an old report in \gls{SAC}.
+\subsubsection*{Architectural position}
+When considering the data lineage, Power BI is replacing both the \gls{DSP} on the data model side, as well as the front end part of \gls{SAC}. So in total it is replacing the work areas of the business stakeholders coworking with the \gls{DWHLSOPS} team. This is so because they are involved both in the generation of testing and updating the reports on the reporting and monitoring layer.
+
+\subsection*{Star shema}
+During the speed tests and comparisions with the old business intelligence tool, the star shema as a data architecture was tested. It showed that \gls{PowerBI} was performing better with this new structure. 
+
+\subsubsection*{Basic architectureof star shema}
+When looking at data base architecture, a star shema is basically a partly denormalised database which has been optimised for fast \gls{OLAP} processing. In computing, online analytical processing (OLAP), is an approach to quickly answer multi-dimensional analytical (MDA) queries. This describes the ground work that reporting has to perform in the \gls{DWHLSOPS} team.
+
+A star shema is described by wikipedia in the following way \cite{enwiki:1306074452}:
+\begin{quote}
+\textit{In computing, the star schema or star model is the simplest style of data mart schema and is the approach most widely used to develop data warehouses and dimensional data marts. The star schema consists of one or more fact tables referencing any number of dimension tables. The star schema is an important special case of the snowflake schema, and is more effective for handling simpler queries.
+The star schema gets its name from the physical model's resemblance to a star shape with a fact table at its center and the dimension tables surrounding it representing the star's points.}
+\end{quote}
+
+
+\subsubsection*{Basic architectureof Wide table}
+In contrast to a star shema, a wide table is storing all the data in one big, very wide table. This concept of \gls{widetable} was introduced at Swiss Post, together with \gls{SAC}. In a wide table, the data is not split in different tables, but instead for every dataset all measures existing are repeated. For example every data point measurement that happened at the same factory, would have the same identifying measures of an address repeated rather than only 1 key pointing to a adresses table.
+
+A short concise description of the concept can be found at  \cite{enwiki:QuestDBWideTable}:
+\begin{quote}
+\textit{
+Wide tables are the opposite of narrow tables, storing multiple related attributes horizontally rather than vertically. In time-series applications, a wide table typically has a timestamp column followed by numerous metric columns, making it efficient to retrieve multiple metrics for a given time point.}
+\end{quote}
+
+
+\subsection*{Reporting idea}
+When considering the previous report generated trough \gls{SAC}, it can be seen that is is not very visual. The data is only shown as a table without color highlights or additional indications. Without sufficient business knowhow it did not allow a user to see wether the data quality was ok or not for a specific day. The current report is shown in the following.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/Plain_DQM_WEST_19-12-2025_08-43-34.png}
+    \caption{Existing plain DQM dashboard used as the baseline for the redesigned Power BI report}
+    \label{fig:plain_dqm_dashboard}
+\end{figure}
+
+To improve this situation, a report which hast to replace it, must be more visual. And apply some of the most basic business knowledge allowing to see its results faster. As the previous research has already defined which rules must be applied in an automatic check, those rules are the basis for the reports visualisation.
+
+\subsubsection{Business stakeholder feedback}
+During meetings with the business their requirements were accumulated. Those were simple, the report had to be upgraded to use the new data source. Since with the adoption of Power BI, also a more efficient reporting datastructure was possible, it had to be again measurable. As the data itself was only rearranged but not radically new, the checks and the way they had to be shown in a table stayed the same.
+
+
+
+\subsection*{DevOps}
+What post does
+basic principle---
+what does post do
+\subsubsection*{Backend deployment pipelines}
+\subsubsection*{Frontend}
+
+\subsection*{Tool selection principles}
+buy before build
+cloud first
+requirement list
+
+\subsection*{DQM tooling test}
+Goal of the test...
+Preparation for follow up research
+Linkage to follow up
+
+
+\subsubsection*{Design decisions}
+continue on the DQM check
+a already researched data lineage
+a already defined rule when data is ok
+have the check automatised
+This follows the concept of automatisation as from the first project
+
