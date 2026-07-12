@@ -25,8 +25,31 @@ First try was to have all events applicable returned by the query while just rem
 
 \subsection*{Creating new resources}
 Another defined process at Swiss Post using AWS is, that resources such as a CloudWatch metric stream, could not be created directly in the AWS console. All such resources have to be deinfed in teraform. At Swiss Post \gls{terraform} is the designated infrastructure as code, it is used to define, deploy, destroy and manage resources on AWS trough configuration files. Again each of the accounts had their own repository on GitHub where in the teraform files are stored.
+As defined in the code used, the teraform locals were setting which queries were to be executed with what parameters. The following excerpts shows the query used with it's where parameters, while the full code is in the annex at \ref{FullTestingTeraformMonitoringCode}.
 
 
+\begin{lstlisting}[caption={Excerpt of the Terraform configuration defining scheduled data quality monitoring queries},label={lst:terraform_dqm}]
+    queries = [
+      {
+        "table" : "sendungsverarbeitung_dqm_starschema_no_aggregation_small_v",
+        "where_clause" : [
+          {
+            "column" : "locationKey",
+            "operation" : "=",
+            "value" : "HRK"
+          },
+          {
+            "column" : "relevant_submitted",
+            "operation" : "=",
+            "value" : 1
+          }
+        ]
+      },
+      {
+        "table" : "curated_lsops_submitted_dqm"
+      }
+    ]
+\end{lstlisting}
 
 Was das Diagramm erklärt
 

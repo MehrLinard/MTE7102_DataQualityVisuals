@@ -1,0 +1,34 @@
+\chapter{Amazon Athena Queries}
+
+This appendix provides the different teraform codes used during the project.
+
+\section{Full monitoring teraform}
+\label{FullTestingTeraformMonitoringCode}
+\begin{lstlisting}[caption={Excerpt of the Terraform configuration defining scheduled data quality monitoring queries},label={lst:terraform_dqm}]
+locals {
+  reporting_lsops = {
+    schedule_expression = "cron(0/15 * * * ? *)"
+
+    queries = [
+      {
+        "table" : "sendungsverarbeitung_dqm_starschema_no_aggregation_small_v",
+        "where_clause" : [
+          {
+            "column" : "locationKey",
+            "operation" : "=",
+            "value" : "HRK"
+          },
+          {
+            "column" : "relevant_submitted",
+            "operation" : "=",
+            "value" : 1
+          }
+        ]
+      },
+      {
+        "table" : "curated_lsops_submitted_dqm"
+      }
+    ]
+  }
+}
+\end{lstlisting}
