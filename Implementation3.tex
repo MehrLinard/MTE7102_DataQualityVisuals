@@ -1,8 +1,10 @@
 \section{SMART Goal 3: Test of DQM Tooling}
-This smart goal follows the test of the designated DQM tool with which a test leading up to a master thesis can be performed. The usecase was defined during a call with a solution architect as described in the previous section. It uses one deliverable of the AWS modernisation, which is a monitoring for jobs. However the monitoring was also designed in a way that some data could be checked. However this functionality was developed only in a very basic way, so it had to be confirmed that it is fit to handle checks as they would be used during the master thesis.
 
-\subsection*{Knowledge transfer sessions}
-As the AWS modernisation team was developing the functionality, in turn knowledge transfer sessions were held to show the \gls{DWHLSOPS} team how to use it. Furthermore extensive documentation was written describing the interlinkage of the different \gls{awsService}
+This SMART goal follows the testing of the designated \gls{DQM} tool, with which a use case leading towards the master's thesis can be implemented. The use case was defined during a discussion with the solution architect, as described in the previous section. It uses one of the deliverables of the AWS modernisation initiative, namely a monitoring solution for jobs. However, the monitoring solution was also designed in a way that allows selected data to be checked. As this functionality had only been developed in a basic form, it first had to be confirmed that it was suitable for performing the checks required during the master's thesis.
+
+\subsection*{Knowledge Transfer Sessions}
+
+As the AWS modernisation team was developing this functionality, knowledge transfer sessions were held to show the \gls{DWHLSOPS} team how to use it. Furthermore, extensive documentation was written describing the interaction between the different \gls{awsService}.
 
 
 \begin{figure}[H]
@@ -12,21 +14,21 @@ As the AWS modernisation team was developing the functionality, in turn knowledg
     \label{fig:aws_monitoring_architecture}
 \end{figure}
 
-\subsection*{First step, design a measureable case}
 
-First, a measureable case had to be identified. Based on the DQM test and the dashboard created in SMART goal 1, the count of daily events would be taken as example.
-The existing basic monitoring code, was able to perform a count of rows. However the query used for the dashoard returned daily counts per sorting center.
-For testing purpose, the existing monitoring code had to be used, therefore the sql had to be adapted, so that it did not return the counts per center, but was providing the number of events per a defined center and date.
+\subsection*{First Step: Design a Measurable Use Case}
 
-\subsection*{Testing and creating a view for testing}
+First, a measurable use case had to be identified. Based on the DQM test and the dashboard created in SMART Goal 1, the daily event count was selected as the example. The existing basic monitoring code was able to perform a row count. However, the query used for the dashboard returned daily counts per sorting centre. For testing purposes, the existing monitoring code had to be used. Therefore, the SQL query had to be adapted so that, instead of returning counts per sorting centre, it returned the number of events for a defined sorting centre and date.
 
-First try was to have all events applicable returned by the query while just removing the counts per day. As this resulted in time outs on \gls{athena}, the query had to be redisigned. In turn tries were run reducing the data. This continued till only 1 event was checked. The query retrieved after this initial testing can be seen at the appendix at \ref{newMonitoringDQMquery}. Same as with the previous queries for views, also this one had to be checked into the related GitHub repository. 
+\subsection*{Testing and Creating a View for Testing}
+
+The first attempt was to return all applicable events while removing only the daily counts from the query. As this resulted in timeouts in \gls{athena}, the query had to be redesigned. Consequently, several attempts were made to reduce the amount of data processed. This process continued until only a single event was checked. The resulting query after this initial testing can be found in Appendix \ref{newMonitoringDQMquery}. As with the previous view queries, this query also had to be committed to the corresponding GitHub repository.
 
 
-\subsection*{Creating new resources}
-Another defined process at Swiss Post using AWS is, that resources such as a CloudWatch metric stream, could not be created directly in the AWS console. All such resources have to be deinfed in teraform. At Swiss Post \gls{terraform} is the designated infrastructure as code, it is used to define, deploy, destroy and manage resources on AWS trough configuration files. Again each of the accounts had their own repository on GitHub where in the teraform files are stored.
-As defined in the code used, the teraform locals were setting which queries were to be executed with what parameters. The following excerpts shows the query used with it's where parameters, while the full code is in the annex at \ref{FullTestingTeraformMonitoringCode}.
+\subsection*{Creating New Resources}
 
+Another process defined at Swiss Post for AWS is that resources such as a CloudWatch metric stream cannot be created directly in the AWS console. Instead, all such resources have to be defined in Terraform. At Swiss Post, \gls{terraform} is the designated infrastructure-as-code solution. It is used to define, deploy, destroy, and manage AWS resources through configuration files. Furthermore, each AWS account has its own GitHub repository in which the Terraform files are stored.
+
+As defined in the code, the Terraform locals specify which queries are executed and with which parameters. The following excerpt shows the query together with its \texttt{WHERE} parameters, while the full code can be found in Appendix \ref{FullTestingTeraformMonitoringCode}.
 
 \begin{lstlisting}[caption={Excerpt of the Terraform configuration defining scheduled data quality monitoring queries},label={lst:terraform_dqm}]
     queries = [
@@ -51,8 +53,9 @@ As defined in the code used, the teraform locals were setting which queries were
     ]
 \end{lstlisting}
 
-\subsection*{Code execution testing}
-After the resources have been created using teraform, the codes execution could be manually tested. This is done by loggin into the \gls{awsConsole}, logging into the right account and then selecting the \gls{awsEventBridge}. The newly cfreated schedule here, is showing the required payload for the next step in testing, the payload is see at the bottom of the following screen, followed by the detail json code  extracted and copied as input for the linked \gls{awsLambda}.
+\subsection*{Code Execution Testing}
+
+After the resources had been created using Terraform, the code execution could be tested manually. This was done by logging into the \gls{awsConsole}, selecting the correct AWS account, and then opening \gls{awsEventBridge}. The newly created schedule shows the payload required for the next testing step. The payload is shown at the bottom of the following screen, followed by the detailed JSON code extracted and copied as the input for the linked \gls{awsLambda}.
 
 \begin{figure}[H]
     \centering
@@ -95,8 +98,7 @@ label={lst:eventbridge_payload}]
 }
 \end{lstlisting}
 
-
-After the execution of the Lambda and execution error was observed which is shown below. After investigating this error, it became clear that the condition the team injected into the sql was not valid. The base data monitoring code would change the sql condition checking for minus 35 day to be escaped so that the sql is not executed properly. After discussion with the AWS modernisation team, this bug was worked on by the consultants.
+After the execution of the Lambda, an execution error was observed, as shown below. After investigating this error, it became clear that the condition injected into the SQL query by the team was not valid. The underlying data monitoring code automatically modified the SQL condition checking for the previous 35 days by escaping parts of the query, causing the SQL statement to be executed incorrectly. After discussions with the AWS modernisation team, this bug was addressed by the consultants.
 
 \begin{figure}[H]
     \centering
@@ -106,6 +108,7 @@ After the execution of the Lambda and execution error was observed which is show
 \end{figure}
 
 After they resolved the bug, the data monitoring now allowed to enter a date range for the count as seen in the following figure.
+With this fix, the feasability of DQM checks based on row counts using the monitoring setup was proofen to work.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{./content/img/AWS_Monitoring_Improvements.png}
@@ -115,113 +118,3 @@ After they resolved the bug, the data monitoring now allowed to enter a date ran
 
 
 
-
-
-
-
-
-
-
-
-
-In this file
-
-Was das Diagramm erklärt
-
-Der Prozess beginnt mit den Entwicklungswerkzeugen:
-
-State the obvious!
-Entwicklung erfolgt mit JetBrains IntelliJ IDEA.
-Die Infrastruktur bzw. Konfiguration wird mit Terraform verwaltet.
-
-Von dort wird der eigentliche Entwicklungsprozess beschrieben:
-
-Als Versionsverwaltung wird Git (Bitbucket) verwendet.
-Für Änderungen müssen die Regeln zum Erstellen von Branches eingehalten werden.
-Der Entwickler arbeitet auf einem eigenen Branch (mittig ist als Beispiel ein git status auf einem Feature-Branch dargestellt).
-Sobald die Änderung fertig ist, muss ein Pull Request erstellt werden.
-Anschließend erfolgt der Merge in den Master-Branch.
-Vor dem Merge ist ein Test Build erforderlich.
-Für die Entwicklungsumgebung (Dev) reicht ein erfolgreicher Build aus, damit der Merge durchgeführt werden kann.
-Was noch ergänzt werden könnte
-
-Im Vergleich zu deinem ersten Diagramm fehlen hier noch einige Informationen, die den Prozess vollständiger machen würden:
-
-Wer überprüft den Pull Request?
-Ist mindestens ein Review erforderlich?
-Gibt es unterschiedliche Anforderungen zwischen Dev und Prod?
-Wird nach dem Merge automatisch deployed oder manuell?
-Gibt es mehrere Repositories (Test / Production)?
-Erfolgt der Build über eine CI/CD-Pipeline?
-
-Gerade diese Punkte wären für einen wissenschaftlichen Bericht interessant, da sie den organisatorischen Teil des DevOps-Prozesses beschreiben.
-
-Wie man das wissenschaftlicher beschreiben könnte
-
-Anstatt die einzelnen Werkzeuge aufzuzählen, würde ich den Ablauf eher prozessorientiert beschreiben, beispielsweise:
-
-Infrastructure changes are implemented using Terraform within the IntelliJ IDEA development environment. Source code is managed using Git with Bitbucket as the central repository. Each change is developed on a dedicated feature branch following the project's branching conventions. After implementation, a pull request is created and submitted for integration into the master branch. Before the merge can be completed, a successful build must be executed. For the development environment, a successful build is sufficient to allow the merge.
-
-
-\subsection*{final stuff..... new resources}
-
-Die Notizen dokumentieren im Grunde einen Proof of Concept (PoC) zur Einführung einer ersten Data-Quality-Metrik innerhalb der AWS-Monitoring-Architektur. Es geht weniger um die technische Implementierung selbst, sondern darum, den gesamten Prozess von der Definition bis zur erfolgreichen Ausführung einer Metrik zu validieren.
-
-Inhalt der Notizen
-Ziel
-Query zur Überwachung erstellen.
-Prüfen, ob das definierte Monitoring mit dieser Query funktioniert.
-Hinterfragen, ob die Query in der vorgesehenen Form umgesetzt werden sollte.
-Gefundener Fehler
-
-Während der Validierung wurde ein Problem festgestellt:
-
-Fehler in der AWS-Umgebung (Canbda).
-Gemeinsam mit einer Kollegin (Kristina) überprüft.
-Ursache war ein Copy-and-Paste-Fehler.
-Falscher Wert:
-HRK = 014
-Richtiger Wert:
-LocationKey = HRK
-Umsetzung
-Fehler wurde korrigiert.
-Dafür musste ein weiterer Pull Request erstellt werden.
-Ergebnis
-Die Metrik wurde anschließend erstmals erfolgreich ausgeführt.
-Zeitpunkt:
-10:45 CEST, 11.05.2026
-Erkenntnisse
-
-Eine wichtige Erkenntnis ist am Ende notiert:
-
-Jede zusätzliche Monitoring-Metrik verursacht laufende Kosten, da mehrere AWS-Services beteiligt sind, beispielsweise
-
-AWS Lambda
-Amazon CloudWatch
-Amazon S3
-
-Deshalb sollten Test- oder PoC-Metriken nach Abschluss der Validierung möglichst zeitnah wieder entfernt werden.
-
-Wie würde ich das in SMART Goal 3 beschreiben?
-
-Ich würde die Notizen nicht als "Meeting Notes" oder "Personal Notes" darstellen, sondern als Dokumentation der ersten Validierung des Monitoring-Konzepts.
-
-Beispielsweise:
-
-As preparation for the Master's thesis, an initial proof of concept was conducted to validate the proposed AWS-based data quality monitoring architecture. This included defining an initial monitoring query, deploying the corresponding metric, validating its execution, and troubleshooting configuration issues encountered during the implementation. During this process, a configuration error caused by an incorrect mapping was identified and resolved through an additional pull request. After the correction, the monitoring metric was successfully executed for the first time. The proof of concept also demonstrated that each monitoring metric introduces operational costs through the involved AWS services, highlighting the importance of removing temporary test metrics after validation.
-
-Warum das gut zu SMART Goal 3 passt
-
-SMART Goal 3 lautet sinngemäß, die Werkzeuge und die technische Machbarkeit für die spätere Masterarbeit vorzubereiten. Genau das zeigen diese Notizen:
-
-erste praktische Validierung der Architektur,
-Implementierung einer Monitoring-Metrik,
-Behebung eines realen Implementierungsfehlers,
-erfolgreicher Nachweis der Funktionsfähigkeit,
-Erkenntnisse über betriebliche Auswirkungen (Kosten).
-
-Das macht aus den handschriftlichen Notizen einen nachvollziehbaren Validierungsschritt innerhalb deines Projekts und nicht nur eine Sammlung persönlicher Arbeitsnotizen.
-
-Oder etwas allgemeiner:
-
-The DevOps workflow follows a standard Git-based development process. Developers implement infrastructure changes using Terraform, commit their work to feature branches, and submit pull requests for integration into the main branch. Automated build validation ensures that only successfully verified changes are merged into the development environment.
