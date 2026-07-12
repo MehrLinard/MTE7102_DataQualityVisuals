@@ -3,22 +3,63 @@ As part of SMART goal 2, the DQM team was followed on their way towards a tool d
 
 
 \subsection*{Tool evaluation}
-Describe...
-we search a dqm tool
-which to be used ...
+While the previous research \cite{Roccaro2026_Project1} described a \gls{DQM} tool beeing developed, other initiatives at Swiss Post looked for a company wide solution.
 
 \subsection*{Tool selection for DWH}
-The DWH Decided that Cats are to hangry beasts
-the dwh has other ideas
-the dwh is running aws mordernisation
+The \gls{DWHLSOPS} team continued their work together with the plattform team as defined in the KPI of the AWS modernisation initiative. As this initiative was launched by the DWH team, their needs were the main driver of the development. During the course of this project, the tools was developed from \gls{PoC} status to beeing able to run first tests and then setup to check real data.
 
 \subsection*{Tool selection for Swiss Post}
-The decision for Swiss Post was taken..
-Not the dqm plattform..
-Swiss Post.. for the whole swiss post
+However, for the full Swiss Post, the tool developed for DWH was considered to specialised. The main considerations against the initiatives were:
 
+\begin{itemize}
+    \item The DWH initiative was considered too specialised to its use case not beeing fit for company wide deployment.
+    \item The developed tool did not address the broader system landscape of Swiss Post.
+    \item The evaluation followed the principle of \textit{buy before build}, taking solutions from the market rather than inventing specialised hard to manage tools.
+    \item Support for SAP data sources was a key requirement, as they contain critical and accounting related data having a high loss potential.
+\end{itemize}
+
+This lead to the evaluation of tools which are available on the market.
+
+
+\subsubsection*{Demo}
+One of these presentations was provided by Soda, beeing invited to perform a demo for Swiss Post.
+Soda presented their tooling in a online meeting focusing on their key features:
+\begin{itemize}
+	\item Machine Learning is helping at identifying fluctuations which are visualised as graphs
+	\item A No Code Interface, allowing the business to setup rules
+	\item Rules can be defined using rulers to define an OK and fail range
+	\item A LLM chatbot allowing to setup roles and data contracts
+	\item Data contract : Which is one Shema at Column level with definitions made by the client.
+	\item They allow row level checks
+	\item Detection of missing master data links 
+	\item On failure of data check it runs queries automatically to help identify the missing part 
+\end{itemize}
+
+
+\subsubsection*{Decision}
+Shortly after the presentation, the answer regarding the tool was provided. The tool did not provide direct support for SAP data, as an important component.
+Therefore it was rejected and the evaluation continued.
+The following internal message describes the reasoning:
+
+\begin{quote}
+\textit{Hi everyone,}
+ 
+\textit{I wanted to share a quick update on our data quality tool evaluation process.}
+ 
+\textit{After reviewing the recent demo of Soda and considering our requirements, we have decided not to continue with this particular vendor. The main reason is the lack of a direct connection to SAP data, which is a critical component of our data landscape.}
+ 
+\textit{We will instead proceed with the remaining vendors (Collate, Informatica and Ataccama) and continue our evaluation process with them.}
+ 
+\textit{Thank you all for your participation and valuable input so far. I’ll keep you updated on the next steps.}
+ 
+
+\textit{Best regards}
+\end{quote}
 
 \subsection*{DQM plattform tool}
+
+
+
 The decision for Swiss Post was taken..
 Not the dqm plattform..
 18.05.2026  | Meeting
