@@ -12,13 +12,19 @@ As the AWS modernisation team was developing the functionality, in turn knowledg
     \label{fig:aws_monitoring_architecture}
 \end{figure}
 
-\subsection*{First steps creating view for testing}
+\subsection*{First step, design a measureable case}
+
+First, a measureable case had to be identified. Based on the DQM test and the dashboard created in SMART goal 1, the count of daily events would be taken as example.
+The existing basic monitoring code, was able to perform a count of rows. However the query used for the dashoard returned daily counts per sorting center.
+For testing purpose, the existing monitoring code had to be used, therefore the sql had to be adapted, so that it did not return the counts per center, but was providing the number of events per a defined center and date.
+
+\subsection*{Testing and creating a view for testing}
+
+First try was to have all events applicable returned by the query while just removing the counts per day. As this resulted in time outs on \gls{athena}, the query had to be redisigned. In turn tries were run reducing the data. This continued till only 1 event was checked. The query retrieved after this initial testing can be seen at the appendix at \ref{newMonitoringDQMquery}. Same as with the previous queries for views, also this one had to be checked into the related GitHub repository. 
 
 
-
-\subsection*{creating new resources}
-
-
+\subsection*{Creating new resources}
+Another defined process at Swiss Post using AWS is, that resources such as a CloudWatch metric stream, could not be created directly in the AWS console. All such resources have to be deinfed in teraform. At Swiss Post \gls{terraform} is the designated infrastructure as code, it is used to define, deploy, destroy and manage resources on AWS trough configuration files. Again each of the accounts had their own repository on GitHub where in the teraform files are stored.
 
 
 
