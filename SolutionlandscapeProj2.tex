@@ -2,11 +2,15 @@
 \section{Report visualisations and evaluations}
 After the basic solution landscape this project now dives deeper into the more specific context of report visualisations and evaluation of automatisation.
 
+
+
 \subsection*{Power BI}
 
 At Swiss Post in the environment of the \gls{DWHLSOPS}, \gls{PowerBI} is the set business intelligence tool. It is to replace the currently used tools over time. The main reasons for this shift are the lower license cost in comparision with the previous \gls{SAC} and furthermore it has performed faster in direct comparision tests with its predesessor. Therefore, Power BI served as BI tool in this project, as it is specifically replacing an old report in \gls{SAC}.
 \subsubsection*{Architectural position}
 When considering the data lineage, Power BI is replacing both the \gls{DSP} on the data model side, as well as the front end part of \gls{SAC}. So in total it is replacing the work areas of the business stakeholders coworking with the \gls{DWHLSOPS} team. This is so because they are involved both in the generation of testing and updating the reports on the reporting and monitoring layer.
+
+
 
 \subsection*{Star shema}
 During the speed tests and comparisions with the old business intelligence tool, the star shema as a data architecture was tested. It showed that \gls{PowerBI} was performing better with this new structure. Therefore as Power BI was designated as new business intelligence tool, the architecture was changed to this.
@@ -31,6 +35,7 @@ Wide tables are the opposite of narrow tables, storing multiple related attribut
 \end{quote}
 
 
+
 \subsection*{Reporting idea}
 When considering the previous report generated trough \gls{SAC}, it can be seen that is is not very visual. The data is only shown as a table without color highlights or additional indications. Without sufficient business knowhow it did not allow a user to see wether the data quality was ok or not for a specific day. The current report is shown in the following.
 \begin{figure}[H]
@@ -43,16 +48,64 @@ When considering the previous report generated trough \gls{SAC}, it can be seen 
 To improve this situation, a report which hast to replace it, must be more visual. And apply some of the most basic business knowledge allowing to see its results faster. As the previous research has already defined which rules must be applied in an automatic check, those rules are the basis for the reports visualisation.
 
 \subsubsection{Business stakeholder feedback}
-During meetings with the business their requirements were accumulated. Those were simple, the report had to be upgraded to use the new data source. Since with the adoption of Power BI, also a more efficient reporting datastructure was possible, it had to be again measurable. As the data itself was only rearranged but not radically new, the checks and the way they had to be shown in a table stayed the same.
+During meetings with the business their requirements were accumulated. Those were simple, the report had to be upgraded to use the new data source. Since with the adoption of Power BI, also a more efficient reporting datastructure was possible, it had to be again measurable. As the data itself was only rearranged but not radically new, the checks and the way they had to be shown in a table stayed the same. Regarding additional improvements of the report no direction was given, however an OK was provided to improve the report with useful information.
 
 
 
 \subsection*{DevOps}
-What post does
-basic principle---
-what does post do
-\subsubsection*{Backend deployment pipelines}
-\subsubsection*{Frontend}
+At Swiss Post deployments are done by the software engineers effectively turning their field of operations to \gls{DevOps}. 
+
+The field of DevOps is described by Wikipedia as follows \cite{enwiki:1362982395}:
+DevOps is the integration and automation of software development and information technology operations. DevOps encompasses the tasks necessary for software development and can lead to both shortening development time and improving the development life cycle. According to American software architect Neal Ford, DevOps, particularly through continuous delivery, employs the "bring the pain forward" principle by tackling challenging tasks early, fostering automation, and enabling swift issue detection.
+
+Although debated, DevOps is generally characterized by three key principles: shared ownership, workflow automation, and rapid feedback. From an academic perspective, Len Bass, Ingo Weber, and Liming Zhu—three computer science researchers from the CSIRO and the Software Engineering Institute—defined DevOps as "a set of practices intended to reduce the time between committing a change to a system and the change being placed into normal production, while ensuring high quality". However, the term is used in multiple contexts. At its most successful, DevOps is a combination of specific practices, culture change, and tools.
+
+
+
+\subsubsection*{DevOps at Swiss Post}
+At Swiss Post this the DevOps process is already defined and is not changed by this project, it will apply all defined tools and rules. To name the general rules:
+
+
+\begin{itemize}
+    \item GitHub is used as CodeRepository using SSO with post accounts
+    \item The access to repositories is limited and managed by a permission system
+    \item Separate repositories exist for development and productive environments
+    \item Repositories are also separated by function, e.g. repositories for teraform \gls{IaC} or sql scripts for \gls{athena}
+    \item Development is performed on branches
+    \item To merge branches a pull request is required, this triggeres GitHub actions
+    \item The Github actions are performing checks depending on repository and function
+    \item To merge code on production environments a review by another developer is required in addition to successful Github actions
+    \item In addition to this deployment pipeline, DevOPS engineer continue maintaining and support their code
+\end{itemize}
+
+
+
+\subsubsection*{Frontend deployment pipelines}
+
+Regarding frontend reports a similar process is already defined and also applie, not adapted by this project.
+When deploying front end reports using Power BI, the process is happening entirely on the microsoft environments.
+\begin{itemize}
+    \item Reports are initially created on Power BI desktop
+    \item Development and testing happens on the desktop version first
+    \item The report is deployed from Power BI desktop to Microsoft Fabric, development environment
+    \item The code is checked in using git integration in Microsoft 
+    \item The report is tested first in the development environment
+    \item Then it is deployed trough the defined pipeline to test environment
+    \item Stakeholders are performing tests on test environment
+    \item After successful tests and eventual fixes the go for productive deployment is given
+    \item Productive deployment is done again trough the deployment pipeline
+\end{itemize}
+
+The deployment pipeline is shown in the below figure, showing the selection of environments from which the 3 steps process starts.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/PowerBI_Deployment.png}
+    \caption{Power BI deployment pipeline across the development, test, and production environments}
+    \label{fig:powerbi_deployment_pipeline}
+\end{figure}
+
+
 
 \subsection*{Tool selection principles}
 buy before build
