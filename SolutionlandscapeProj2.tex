@@ -107,14 +107,23 @@ The deployment pipeline is shown in the below figure, showing the selection of e
 
 
 
+\section{DQM tool selection}
+The DQM tool selection required a structured approach. Such approach required to first setup a list of requirements towards a tools. Then a evaluation how well tools are fulfilling these requirements. And finally the invitation of the fulfilling providers to demos.
+
 \subsection*{Tool selection principles}
+the first step in evaluating a tool must be to get to know, what a tools actually needs to have. Commonly those lists are called requirement lists.
+They have to incorporate the must have features of a tool and the nice to have requirements. With such a list, the decision together with higher management is made easier, as they allow for a scoring and easy overview of which tool scored how many points. Based on such points list, the per performing or best price can be selected.
 
+\subsection*{Requirements list}
+At Swiss Post the \gls{DQM} team setup the requirements list. It incorporates the following main principles:
 
-buy before build
-cloud first
-requirement list
-
-HundKatze Maus
+\begin{itemize}
+    \item \textbf{Data Coverage \& Connectivity:} The integration into the existing tool landscape. The requiements to be cloud first. Most important data sources that need to be handled.
+    \item \textbf{Data Quality Capabilities:} What actual DQM requirements the tool must fullfill. The usability which is expected, such as NoCode environments.
+    \item \textbf{Reporting \& Monitoring:} The tool must allow exports to other tools for reporting purpose.
+    \item \textbf{Performance and Reliability:} The tool needs to be responsive also on big datasets as Swiss Post will want to run checks on very large transaction datasets.
+    \item \textbf{Cost \& Licensing:} The cost of a tool is relevant. How is the cost structured.
+\end{itemize}
 
 \begin{figure}[H]
     \centering
@@ -123,6 +132,13 @@ HundKatze Maus
     \label{fig:dqm_tool_evaluation_1}
 \end{figure}
 
+Additionally there are the more \gls{softcriteria} which are nice to have. Soft criteria are the criteria which are not mandatory but make the usage of an application easier for users e.g. provide easy management of access roles:
+
+\begin{itemize}
+    \item \textbf{Usability \& User experience:} User permission system allowing multiple different access levels and their provisioning trough existing means.
+    \item \textbf{Technical requirements:} The security requirements which the cloud solution has to meet. Additionally the connectivity options they need to support
+\end{itemize}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{./content/PostInput1/DQM_Tool_Evaluation_2.png}
@@ -130,16 +146,26 @@ HundKatze Maus
     \label{fig:dqm_tool_evaluation_2}
 \end{figure}
 
-\subsection*{DQM tooling test}
-Goal of the test...
-Preparation for follow up research
-Linkage to follow up
+\subsection*{DQM tooling selection}
+After having the selection criteria, the tools are researched. The research of these tools has also been done by the DQM team so its out of scope for this work.
+As a result of the tool research, the different found tools are evaluated against the criteria. This finally results in the table as shown below highlighting the performance of the tools against criteria. This table the serves for which tools are inivited for demos or directly excluded.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/PostInput1/DQM_Tool_Evaluation_3.png}
+    \caption{Example of the comparative evaluation matrix used during the assessment of different data quality management tools}
+    \label{fig:dqm_tool_evaluation_3}
+\end{figure}
 
 
-\subsubsection*{Design decisions}
-continue on the DQM check
-a already researched data lineage
-a already defined rule when data is ok
-have the check automatised
-This follows the concept of automatisation as from the first project
+\subsection*{Design decisions}
+Next step after the evaluation table is to invite the succeeding tools to a demo. In this demo the providers are asked to show their performance of the tool against the defined criteria but can also show what specific benefit they bring with. The demo provides the selecting company with a more detailed view of the capabilities applied to their dataset or if any shortcommings are blocking the decision. Furthermore it allows the selecting company to directly ask questions on open items. After a demo the scoring can be adjusted and finally a decision made wether to go ahead with a provider into \gls{PoC} or even contract negotiations or send them the information that they dropped our of the selection.
+
+
+
+\section{DQM tool testing}
+The DQM tool selection required a structured approach. Such approach required to first setup a list of requirements towards a tools. Then a evaluation how well tools are fulfilling these requirements. And finally the invitation of the fulfilling providers to demos.
+
+\subsection*{BlaBla2}
+
 
