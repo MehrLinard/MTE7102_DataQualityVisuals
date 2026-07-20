@@ -1,15 +1,20 @@
 
 \section{The Swiss Post addresses data quality in multiple ways}
 \label{SolutionMultipleTeams}
-At the start of this project, the objective was to develop a minimal viable product (\gls{MVP}) to replace a manual data quality check performed by the business with a more robust solution, including automation, the delivery of reports, as well as and appropriate notification and alerting. However, after beginning this project, Swiss Post management assigned a new priority to the topic of data quality management (\gls{DQM}) overall; therefore, quite unexpectedly, this project acquired an additional set of key stakeholders, located in different teams as discussed in chapter \ref{sec:AWSmodernisationteam}. 
+At the start of this project, the objective was to develop a minimal viable product (\gls{MVP}) to replace a manual data quality check performed by the business with a more robust solution, including automation, the delivery of reports, as well as an appropriate notification and alerting. However, after beginning this project, Swiss Post management assigned a new priority to the topic of data quality management (\gls{DQM}) overall; therefore, quite unexpectedly, this project acquired an additional set of key stakeholders, located in different teams as discussed in chapter \ref{sec:AWSmodernisationteam}. 
 
 
 Fortunately, this project as originally conceived fit very well into the larger \gls{DQM} picture.  Coordination with these teams although not originally envisioned (such as the DQM team described in chapter \ref{sec:DQMteam}) therefore became an important task. This coordination was essential for several reasons: first and most obviously,  the project must avoid reinventing existing solutions or overlapping in an unplanned way with other new initiatives. Second, it must ensure that methods and deliverables of this project conform to any new data architecture standards; for example, data quality dimensions have already been defined and documented by other teams. Finally, it must ensure that ongoing work by other teams is taken into account. 
 
 
-\section{Rule based DQM initiative}
+
+\section{Rule-Based DQM Initiative}
 \label{DQMRuleBasedInitiative}
-The current architectural goal followed by the \gls{DQM} team is shown in the following visualisation. The rule evaluation engine, seen top middle runs defined rules on target data and then stores the rule results in a database. In this context, a rule represents a check for data quality, or more precisely for a defined dataset; many different rules can exist. These standards or rules could, for example, consist of allowed values, such as gender allowing only three strings: male, female, and not stated. Alternatively, they could define allowed value types, for example permitting only dates in UTC format, or expected value ranges depending on weekdays.
+
+The current architectural goal pursued by the \gls{DQM} team is shown in the following visualisation. The rule evaluation engine, shown at the top centre, executes defined rules on target data and stores the corresponding rule results in a database. In this context, a rule represents a data quality check for a defined dataset, and many different rules can be defined. These rules may, for example, specify allowed values, such as restricting the gender attribute to the three values \textit{male}, \textit{female}, and \textit{not stated}. Alternatively, they may define expected data types, such as requiring dates to be stored in UTC format, or specify valid value ranges depending on the weekday.
+
+Although the rule evaluation engine was a major topic during the weekly exchanges with the \gls{DQM} team, it was not implemented by the project team. Nevertheless, its development progress was regularly monitored and discussed during these meetings. Furthermore, the \gls{ASTV} team used this tool for its intended purpose. However, this usage was outside the scope of this project.
+
 
 \begin{figure}[H]
     \centering
@@ -18,9 +23,12 @@ The current architectural goal followed by the \gls{DQM} team is shown in the fo
     \label{fig:dwhlsops_kpi14_future_rulecheck_dqm}
 \end{figure}
 
-\subsection*{High level target}
+
+
+\subsection*{High-Level Target}
 \label{SolutionDQMTeamHighLevelTarget}
-Out of the complete target solution architecture, the first part to be implemented is. A rule-based DQM suite aimed to define generic checks that can be implemented across different datasets. This can be achieved by abstracting the check from the data, or by providing an SQL query that delivers the data in a form that allows the same check to be applied to different datasets. This approach leads to four main steps:
+
+From the complete target solution architecture, the first component to be implemented is a rule-based DQM suite. Its objective is to define generic data quality checks that can be applied across different datasets. This is achieved either by abstracting the check from the underlying data or by providing an SQL query that returns the data in a format allowing the same check to be applied to different datasets. The technology used to implement this solution is not discussed in this document, as the implementation was carried out by another team and is therefore outside the scope of this project. This approach consists of four main steps:
 
 \begin{itemize}
     \item \textbf{Configuration}: Configuration defines the tables to be checked, the execution frequency, and the type of check.
@@ -36,9 +44,11 @@ Out of the complete target solution architecture, the first part to be implement
     \label{fig:solutiondesign_slide5}
 \end{figure}
 
-\subsection*{Discarded solutions}
 
-This initiative is of high importance to the project, as it creates a major organisation-wide constraint to follow the lead of the DQM team regarding their tool choice. The reasoning for developing a rule-based DQM solution lies in the fact that existing tools, such as \gls{AWSGlueDQ}, do not allow views with complex data types, or that \gls{PyDeequ} does not allow row-level results. These limitations in the evaluated tools led to the decision to build a dedicated solution at Swiss Post, as described above. Here is a short overview of the tools and approaches that were evaluated but then discarded as unsuitable.
+
+\subsection*{Discarded Solutions}
+
+This initiative is of high importance to the project, as it creates a major organisation-wide constraint to follow the \gls{DQM} team's choice of tool. The rationale for developing a rule-based DQM solution is that existing tools, such as \gls{AWSGlueDQ}, do not support views with complex data types, while \gls{PyDeequ} does not provide row-level results. These limitations in the evaluated tools led to the decision to develop a dedicated solution at Swiss Post, as described above. The following section provides a brief overview of the tools and approaches that were evaluated but ultimately discarded as unsuitable. The following screenshot shows the presentation in which the \gls{DQM} team summarised the evaluated tools and explained the reasoning behind their decision.
 
 
 \begin{figure}[H]
@@ -50,7 +60,7 @@ This initiative is of high importance to the project, as it creates a major orga
 
 \subsection*{State at the end of this project}
 \label{SolutionDQMEndOf2025}
-By the end of 2025, the \gls{DQM} team set up a PoC of the rule check engine based on the design shown at the start of this section \ref{fig:dwhlsops_kpi14_future_rulecheck_dqm}. It allows running a check on a database view for specific target data source and storing the rule results in a designated rule result database. The location where the results check database is to be installed has not been defined. Alerting and the setup of dashboards are currently out of scope, as are later additions such as deriving expected value ranges from historical data or holiday calendars.
+By the end of 2025, the \gls{DQM} team set up a PoC of the rule check engine based on the design shown at the start of this section \ref{fig:dwhlsops_kpi14_future_rulecheck_dqm}. It allows running a check on a database view for specific target data source and storing the rule results in a designated rule result database. However many details were still not defined or implemented. Such as the location where the results check database is to be installed which has not been defined. Also the alerting and the setup of dashboards are currently out of scope, as are later additions such as deriving expected value ranges from historical data or holiday calendars. 
 
 
 
@@ -73,9 +83,9 @@ First, due to differences in size, processes differ between small and large cent
     \label{fig:design_PC_and_RPC}
 \end{figure}
 
-\subsection*{Different sorting process}
+\subsection*{Different sorting processes}
 \label{SolutionLandscapeLayoutsDiffProcess}
-To go one step further, the different size and equipment at the sorting centers lead to different actions performed in the sorting centers. The same event in a sorting center can be caused by different previous actions making reporting on them difficult. As an example the submitted and discharged events are described further.
+To go one step further, the different size and equipment at the sorting centers lead to different actions performed in the sorting centers. The same event in a sorting center can be caused by different previous actions making reporting on them difficult. As an example, the submitted and discharged events are described further.
 
 \subsubsection*{Submitted event}
 \label{SolutionSubmittedEvent}
@@ -113,12 +123,13 @@ The discharged event is complementary to the submitted event. It is the last aut
 
 
 
-\section{Data lineage}
+\section{Data Lineage}
 \label{SolutionDataLineage}
-The data relevant to this project are those used by the DWH LS OPS team. They consist of cleaned and deduplicated data stored in a \gls{curated} database layer. However, these data are derived from sensor data and arrive at the data warehouse (\gls{DWH}) in a raw format. The data pass through four main steps, which are also shown in the following figure:
+
+The data relevant to this project are those used by the DWH LS OPS team. They consist of cleaned and deduplicated data stored in the \gls{curated} database layer. However, these data originate from sensor data and arrive in the data warehouse (\gls{DWH}) in a raw format. Before reaching the curated layer, the data pass through four main processing steps, which are also shown in the following figure:
 
 \begin{itemize}
-    \item \textbf{Physical data source}: Scans are performed on parcels by different scanners in sorting centers. As described above the Swiss Post uses a variety of different devices and especially hardware vendors, and that naturally leads to a very large number of data entities that must be stored.  Although researching the actual number was not required, it can be estimated that over X data entities flow from the scanners into the DWH.
+    \item \textbf{Physical data source}: Parcels are scanned by different scanners in the sorting centres. As described above, Swiss Post uses a variety of devices from different hardware vendors, which naturally results in a large number of data entities that must be stored. Each parcel passes through multiple scanners during its journey across the Swiss Post's 13 sorting centres, generating multiple data entities that are transferred to the data warehouse. Determining the exact number of generated events was outside the scope of this project.
     \item \textbf{Initial data storage}: The scan events are first saved in AWS S3.  At first glance this might be a very unusual choice, but the reasons make sense. First, the Swiss Post has a cloud strategy which includes AWS as a service provider; hence the choice of AWS is no surprise.  But more importantly, Amazon S3 (Simple Storage Service) is the object storage service of AWS. Exactly which data are stored here and how is addressed in a following section.
     \item \textbf{Kafka ingestion}: Apache Kafka is an open-source distributed event streaming platform designed for high-throughput, fault-tolerant, real-time data pipelines and event-driven architectures.The Swiss Post 
 [ operates a Kafka environment in its down data centers ]
@@ -166,22 +177,22 @@ In summary, having IT run the data checks would enable continuous follow-up of d
 
 \section{Expected benefits of this reporting solution}
 \label{SolutionReasonsForSol}
-However, a single visualisation does not explain the full benefit of the intended solution. For instance, the question arises as to why the business should stop performing data quality checks when it has the most detailed knowledge of the data. This is quickly clarified by taking a step back. The question should not be why checks are removed from the business, but why the reports are performed by the business in the first place. The benefits of this shift are therefore outlined in more detail in the following.
+A single visualisation does not explain the full benefit of the intended solution. For instance, the question arises as to why the business should stop performing data quality checks when it has the most detailed knowledge of the data. This is quickly clarified by taking a step back. The question should not be why checks are removed from the business, but why the reports are performed by the business in the first place. The benefits of this shift are therefore outlined in more detail in the following.
 
-\subsection*{Benefit 1: Automation over manual processes}
+\subsection*{Benefit 1: Automation over manual processes to reduce effort}
 \label{SolutionReasonsAutomationOverManual}
 The business currently spends 30 to 45 minutes per day on a single data quality check, according to the initial project hand in description. From the duration of the check, it can be inferred that anyone requiring the data quality check before a report based on it is approved must wait until it is finished, resulting in a waiting time of 30 to 45 minutes. This fact provides the basis for understanding why manual processes are not suitable at scale. When scaling up to ten data quality checks, five to seven and a half hours are spent by the business on data quality checks. The waiting time for the last reports to be approved increases accordingly to five to seven and a half hours. When increasing to 20 checks per day, ten to 15 hours are spent, and the waiting time rises accordingly, accounting for more than one full-time position and long delays in report data release. It should be noted that this amount of time is spent solely to determine whether the defined check passes or not.
 If the same initial check is executed by an automated data quality process, the expectation is that execution takes less than one minute; for simplicity, an execution time of one minute is assumed. As no manual initiation is required, no human time is spent performing the check. For comparison, the one minute waiting time for report approval and release is still considered. The business can then be informed whether the check returned an OK or not OK result, and the outcome can be stored for future reference.
 
 When scaling this approach to ten checks, the total execution time remains ten times one minute. However, as the IT system can execute these checks in parallel, the waiting time for results remains at one minute. When increasing to 20 checks per day, the IT systems likewise execute the checks in parallel, and the execution and waiting time remain unchanged.
 
-\subsubsection*{Benefit 2: Scalability}
+\subsubsection*{Benefit 2: Scalability to further reduce overall time required}
 In summary, manual data quality checks cannot be scaled and lead to excessive use of human resources for repetitive tasks, as well as long waiting times for approved datasets. Automated data quality checks, by contrast, allow many checks to be executed in parallel within the same overall time frame. It should be noted that this comparison assumes all checks have similar complexity.
 
-\subsection*{Benefit 3: Separation of concerns}
+\subsection*{Benefit 3: Rule changes without query changes}
 The current manual reports, which are business driven, have their logic built directly into the queries executed on the data. If any rule changes or a part of the data processing is modified, these queries need to be adapted. Thus, the check is deeply tied to the data source. To illustrate this with an example, a data quality check may confirm that 30\% of the data is category A and 70\% is category B, as this is considered the expected and valid distribution. If changes to processing pipelines or client behaviour cause the share of A to increase to 45\% and B to decrease to 55\%, the query performing the check must be adapted. However, when the check is performed by an application that injects these thresholds into a query, the query itself does not need to change, and only the parameters must be adjusted.
 
-\subsubsection*{Benefit 4: Reusability across use cases}
+\subsubsection*{Benefit 4:  Reusability to improve stability and performance}
 By moving the responsibility for checks from manual, business-driven processes to automated checks executed by IT, the checks can be designed to be more generic. Generic checks can be reused across different use cases. This separation of responsibilities and concerns leads to improved stability and performance when applying the checks, which in turn enables strong reusability. The same check type can be applied to different data sources by adapting parameters such as the query and thresholds, while the underlying check logic remains unchanged.
 
 
