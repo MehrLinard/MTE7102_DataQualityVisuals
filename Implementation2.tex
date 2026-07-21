@@ -1,10 +1,14 @@
-\section{SMART Goal 2: Tool Decision}
+\section{SMART goal 2: tool decision}
 
 As part of SMART Goal 2, the DQM team was followed during its evaluation of a suitable tool for \gls{DQM}. This work took place in parallel with SMART Goal 1. For the project team, this goal served to identify the tool to be used in the subsequent master's thesis and allowed its capabilities to be evaluated directly within SMART Goal 3.
 
-\subsection*{Tool Evaluation}
+
+
+\subsection*{Tool evaluation}
 
 While the previous research \cite{Roccaro2026_Project1} described a \gls{DQM} tool being developed, other initiatives at Swiss Post were evaluating a company-wide solution. First, the tool selection process for the company as a whole is examined, followed by the \gls{DWH}-specific solution.
+
+
 
 \subsection*{Tool Selection for Swiss Post}
 
@@ -18,6 +22,8 @@ However, for Swiss Post as a whole, the tool developed for the DWH was considere
 \end{itemize}
 
 This led to the evaluation of tools available on the market.
+
+
 
 \subsubsection*{Demo}
 
@@ -35,9 +41,10 @@ One of these presentations was provided by Soda, which was invited to perform a 
 \end{itemize}
 
 
+
 \subsubsection*{Decision}
 
-Shortly after the presentation, the decision regarding the tool was communicated. The tool did not provide direct support for SAP data, which was considered an essential requirement. Therefore, it was rejected and the evaluation continued.
+Shortly after the presentation, the decision regarding the tool was communicated. The tool did not provide direct support for SAP data, which was considered an essential requirement. Therefore, it was rejected, and the evaluation continued.
 
 The following internal message describes the reasoning:
 
@@ -57,13 +64,19 @@ The following internal message describes the reasoning:
 \end{quote}
 
 
+
 \subsection*{Tool Selection for DWH}
 
 The \gls{DWHLSOPS} team continued its work together with the platform team as defined in the KPIs of the AWS modernisation initiative. As this initiative was launched by the DWH team, its requirements were the main driver of the development. During the course of this project, the tool developed from \gls{PoC} status to being capable of running initial tests and subsequently being configured to validate real data.
 
+
+
+
 \subsection*{DQM Platform Tool}
 
 After continued work by the AWS modernisation team together with the platform team, the \gls{DQM} platform was ready. During a meeting, the current state was presented to the project team. The following excerpts are taken from the meeting minutes:
+
+
 
 \begin{quote}
 \textit{Meeting on: 18.05.2026}
@@ -74,7 +87,7 @@ After continued work by the AWS modernisation team together with the platform te
 
 \textit{The use case checking the master data for missing links has been implemented.}
 
-\textit{Checks are run on a schedule and the results are saved to Amazon S3 in the DWH account.}
+\textit{Checks are run on a schedule, and the results are saved to Amazon S3 in the DWH account.}
 
 \textit{The results can be queried using \gls{athena}.}
 
@@ -84,6 +97,7 @@ After continued work by the AWS modernisation team together with the platform te
 
 \textit{It should be investigated why the data are only available in one account, as they should also be available in another AWS account.}
 \end{quote}
+
 
 
 \subsection*{Discussion with Solution Architect}
@@ -109,6 +123,9 @@ During discussions with the designated solution architect of \gls{DWHLSOPS}, pos
 
 \textit{Acquire as much knowledge as possible before the end of the initiative, when the consultants and their expertise will no longer be available.}
 \end{quote}
+
+
+
 
 \subsection*{Conclusion}
 
