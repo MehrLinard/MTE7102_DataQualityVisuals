@@ -1,6 +1,6 @@
 \section{SMART goal 3: test of DQM tooling}
 
-This SMART goal follows the testing of the designated \gls{DQM} tool, with which a use case leading towards the master's thesis can be implemented. The use case was defined during a discussion with the solution architect, as described in the previous section. It uses one of the deliverables of the AWS modernisation initiative, namely a monitoring solution for jobs. However, the monitoring solution was also designed in such a way that it allows selected data to be checked. As this functionality had only been developed in a basic form, it first had to be confirmed that it was suitable for performing the checks required during the master's thesis.
+This SMART goal follows the testing of the designated \gls{DQM} tool, with which a use case leading towards the master thesis can be implemented. The use case was defined during a discussion with the solution architect, as described in the previous section. It uses one of the deliverables of the AWS modernisation initiative, namely a monitoring solution for jobs. However, the monitoring solution was also designed in such a way that it allows selected data to be checked. As this functionality had only been developed in a basic form, it first had to be confirmed that it was suitable for performing the checks required during the master's thesis.
 
 
 
@@ -31,9 +31,16 @@ The first attempt was to return all applicable events while removing only the da
 
 
 
-\subsection*{Creating new resources}
+\subsection*{Creating New Resources}
 
-Another process defined at Swiss Post for AWS is that resources such as a CloudWatch metric stream cannot be created directly in the AWS Console. Instead, all such resources have to be defined in Terraform. At Swiss Post, \gls{terraform} is the designated infrastructure-as-code solution. It is used to define, deploy, destroy, and manage AWS resources through configuration files. Furthermore, each AWS account has its own GitHub repository in which the Terraform files are stored.
+Another process defined at Swiss Post for AWS is that resources such as a CloudWatch metric stream cannot be created directly in the AWS Console. Instead, all such resources have to be defined in Terraform. At Swiss Post, \gls{terraform} is the designated infrastructure-as-code solution. It is used to define, deploy, destroy, and manage AWS resources through configuration files. Furthermore, each AWS account has its own GitHub repository in which the Terraform files are stored. The following illustration shows the functioning of Terraform in a nutshell \cite{TerraformVisualIntro}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/Teraform_visual.png}
+    \caption{Visual overview of the Terraform workflow illustrating the relationship between configuration files, the Terraform state, providers, and the target infrastructure (adapted from \cite{TerraformVisualIntro}).}
+    \label{fig:terraform_visual_workflow}
+\end{figure}
 
 As defined in the code, the Terraform locals specify which queries are executed and with which parameters. The following excerpt shows the query together with its \texttt{WHERE} parameters, while the full code can be found in Appendix \ref{FullTestingTeraformMonitoringCode}.
 
