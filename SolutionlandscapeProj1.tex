@@ -8,7 +8,7 @@ Fortunately, this project as originally conceived fit very well into the larger 
 
 
 
-\section{Rule-Based DQM Initiative}
+\section{Rule-based DQM initiative}
 \label{DQMRuleBasedInitiative}
 
 The current architectural goal pursued by the \gls{DQM} team is shown in the following visualisation. The rule evaluation engine, shown at the top centre, executes defined rules on target data and stores the corresponding rule results in a database. In this context, a rule represents a data quality check for a defined dataset, and many different rules can be defined. These rules may, for example, specify allowed values, such as restricting the gender attribute to the three values \textit{male}, \textit{female}, and \textit{not stated}. Alternatively, they may define expected data types, such as requiring dates to be stored in UTC format, or specify valid value ranges depending on the weekday.
@@ -25,7 +25,7 @@ Although the rule evaluation engine was a major topic during the weekly exchange
 
 
 
-\subsection*{High-Level Target}
+\subsection*{High-level target}
 \label{SolutionDQMTeamHighLevelTarget}
 
 From the complete target solution architecture, the first component to be implemented is a rule-based DQM suite. Its objective is to define generic data quality checks that can be applied across different datasets. This is achieved either by abstracting the check from the underlying data or by providing an SQL query that returns the data in a format allowing the same check to be applied to different datasets. The technology used to implement this solution is not discussed in this document, as the implementation was carried out by another team and is therefore outside the scope of this project. This approach consists of four main steps:
@@ -46,7 +46,7 @@ From the complete target solution architecture, the first component to be implem
 
 
 
-\subsection*{Discarded Solutions}
+\subsection*{Discarded solutions}
 
 This initiative is of high importance to the project, as it creates a major organisation-wide constraint to follow the \gls{DQM} team's choice of tool. The rationale for developing a rule-based DQM solution is that existing tools, such as \gls{AWSGlueDQ}, do not support views with complex data types, while \gls{PyDeequ} does not provide row-level results. These limitations in the evaluated tools led to the decision to develop a dedicated solution at Swiss Post, as described above. The following section provides a brief overview of the tools and approaches that were evaluated but ultimately discarded as unsuitable. The following screenshot shows the presentation in which the \gls{DQM} team summarised the evaluated tools and explained the reasoning behind their decision.
 
@@ -60,7 +60,7 @@ This initiative is of high importance to the project, as it creates a major orga
 
 \subsection*{State at the end of this project}
 \label{SolutionDQMEndOf2025}
-By the end of 2025, the \gls{DQM} team set up a PoC of the rule check engine based on the design shown at the start of this section \ref{fig:dwhlsops_kpi14_future_rulecheck_dqm}. It allows running a check on a database view for specific target data source and storing the rule results in a designated rule result database. However many details were still not defined or implemented. Such as the location where the results check database is to be installed which has not been defined. Also the alerting and the setup of dashboards are currently out of scope, as are later additions such as deriving expected value ranges from historical data or holiday calendars. 
+By the end of 2025, the \gls{DQM} team set up a PoC of the rule check engine based on the design shown at the start of this section \ref{fig:dwhlsops_kpi14_future_rulecheck_dqm}. It allows running a check on a database view for specific target data source and storing the rule results in a designated rule result database. However, many details were still not defined or implemented. Such as the location where the results check database is to be installed which has not been defined. Also the alerting and the setup of dashboards are currently out of scope, as are later additions such as deriving expected value ranges from historical data or holiday calendars. 
 
 
 
@@ -231,7 +231,7 @@ Amazon Athena is used by Swiss Post DWH LS OPS for all queries on Amazon S3, whi
 The querying layer is relevant to DQM, since data quality issues may become apparent first at this earliest checkpoint, for example when errors occur in the data itself and counts or joins become invalid. While the data is queried at this layer for reporting purposes, it is also queried here for data quality checks. Such checks typically address missing data and data completeness, but can also extend to data plausibility, for example when postal codes are compared to cities. In cases where issues occur at this layer, they are passed downstream towards DSP and SAC, provided they do not already break the pipeline at this stage.
 
 
-\subsubsection*{SAP products SAP Datasphere (DSP) and SAP Analytics Cloud (SAC)}
+\subsubsection*{SAP Datasphere (DSP) and SAP Analytics Cloud (SAC)}
 At Swiss Post, the next step in the reporting pipeline uses the two dependent tools SAP Datasphere (DSP) and SAP Analytics Cloud (SAC). These are described as follows by SAP:
 
 \textit{SAP Datasphere enables organizations to combine, harmonize, and model data from multiple SAP and non-SAP sources within a semantically rich, cloud-based data environment. 
@@ -243,7 +243,7 @@ SAP Datasphere (DSP) is SAP’s cloud-based data platform for integrating, model
 SAP Analytics Cloud (SAC), in turn, uses the data model provided by DSP to present this information on the business layer to end users. More information on this is provided in the separate section introducing the tool.
 
 
-\subsubsection*{DSP datamodel}
+\subsubsection*{DSP data model}
 \label{SolutionDesignDSPModel}
 After querying, the data is persisted in \gls{DSP}, where it is made available in data models. This persistence and processing layer is essential in the current pipeline, as data can be made available to \gls{SAC} only through DSP. At Swiss Post, data persistence has proven essential to improving the response time of the reporting pipeline as a whole.
  With this persistence, DSP does not pass queries back to Amazon Athena, creating a clear separation between the two layers. Due to this separation, DSP is not responsible for DQM, which is handled in lower layers. Finally, DSP is the layer in which business logic is applied in a semantic form, defining what the data represents. At Swiss Post, this is done by applying business oriented naming and calculations. Different report consumers may require the same values to be structured in different ways; for example, productivity in a sorting center may be measured using total working hours against the number of mail pieces handled, or calculated using only time spent on sorting-related tasks, excluding breaks, training, and other activities.
