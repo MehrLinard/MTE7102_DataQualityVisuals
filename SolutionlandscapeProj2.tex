@@ -38,7 +38,7 @@ The star schema gets its name from the physical model's resemblance to a star sh
 
 In contrast to a star schema, a wide table stores all the data in one large, very wide table. This concept of the \gls{widetable} was introduced at Swiss Post together with \gls{SAC}. In a wide table, the data are not split into different tables; instead, all existing measures are repeated for every dataset. For example, every data point measured at the same factory would have the same identifying address information repeated, rather than a single key pointing to an addresses table.
 
-A short, concise description of the concept can be found at \cite{enwiki:QuestDBWideTable}:
+A short, concise description of the concept can be found at \cite{QuestDBWideTable}:
 \begin{quote}
 \textit{
 Wide tables are the opposite of narrow tables, storing multiple related attributes horizontally rather than vertically. In time-series applications, a wide table typically has a timestamp column followed by numerous metric columns, making it efficient to retrieve multiple metrics for a given time point.}

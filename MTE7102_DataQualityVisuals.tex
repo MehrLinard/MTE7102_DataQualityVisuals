@@ -117,10 +117,24 @@
 
 % glossaries and bibliography
 \usepackage{glossaries}
-\usepackage[backend=biber,style=authoryear]{biblatex}
-\addbibresource{MTE7102_DataQualityVisuals.bib} %  JabRef-as bibliography GUI
+
+\usepackage[
+    backend=biber,
+    style=authoryear
+]{biblatex}
+
+\DeclareCiteCommand{\cite}[\mkbibbrackets]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\addbibresource{MTE7102_DataQualityVisuals.bib}
+
 \makeglossaries
 \input{glossary}
+
 
 \begin{document}
 
