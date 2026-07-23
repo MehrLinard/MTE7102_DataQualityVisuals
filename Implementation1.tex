@@ -69,7 +69,17 @@ According to the initial research using \gls{copilot}, the issue could be resolv
 
 \subsubsection*{Model data setup}
 
-After the initial data from the \gls{SAC} report were integrated, the model contained information from two tables sourced from AWS. However, for the further checks, more data sources had to be included. Thus, the data model had to be refined by connecting the tables through the data model view rather than through \gls{mQuery} and \gls{dax}. Initially, only two tables had to be linked through the postal codes and dates. This new model setup was a requirement defined by the team, as was the separation of the measures into a dedicated table in Power BI.
+After the initial data from the \gls{SAC} report were integrated, the model contained information from two tables sourced from AWS. However, for the further checks, more data sources had to be included. Thus, the data model had to be refined by connecting the tables through the data model view rather than through \gls{mQuery} and \gls{dax}. Initially, only two tables had to be linked through the postal codes and dates. This new model setup was a requirement defined by the team, as was the separation of the measures into a dedicated table in Power BI. To highlight the initial setup, the four remaining tables are labelled here and in the next figure in the same way. The different tables are used for:
+
+\begin{itemize}
+    \item \textbf{CSV data:} The data from the CSV file represent the third-party event counts.
+    \item \textbf{Athena data:} These are the data from \gls{athena}, comprising the event counts compared in the report.
+    \item \textbf{Measures:} These are the calculations performed based on the CSV and Athena data.
+    \item \textbf{Date:} The table used for joining and filtering data based on the date.
+    \item \textbf{Postal code:} The table used for joining the data based on the postal code and for filtering it by location name.
+\end{itemize}
+
+
 
 \begin{figure}[H]
     \centering
@@ -80,7 +90,14 @@ After the initial data from the \gls{SAC} report were integrated, the model cont
 
 
 
-The data model was extended towards the end of this SMART goal by integrating the full data model used by the business. This was mandatory to perform the final check, comparing the infoblock data in \gls{athena} with the \gls{aggregationTable} in Power BI. This aggregation table is a means to improve the response time for the most frequently used data points for reporting, which are in turn stored directly in Power BI rather than having to be queried from \gls{athena}. The aggregation table was set up by the \gls{ASTV} team and was used by the project team.
+The data model was extended towards the end of this SMART Goal by integrating the full data model used by the business. This was mandatory to perform the final check, comparing the infoblock data in \gls{athena} with the \gls{aggregationTable} in Power BI. This aggregation table is a means of improving the response time for the most frequently used data points for reporting, which are in turn stored directly in Power BI rather than having to be queried from \gls{athena}. The aggregation table was set up by the \gls{ASTV} team and was used by the project team. The previously existing tables are shown with the same labels, while the additional tables have green labels. The high number of additional tables results from the implemented semantic model of another report. A semantic model is the data model of another report. By using the required green tables, the additional ones are automatically added to the existing data model. The additional tables are:
+
+\begin{itemize}
+    \item \textbf{Aggregation:} The data from the semantic model containing the aggregation counts.
+    \item \textbf{Date:} The table with the complete date information based on the star schema, imported together with the semantic model.
+    \item \textbf{Postal code:} The table with the complete postal code information based on the star schema, imported together with the semantic model.
+\end{itemize}
+
 
 \begin{figure}[H]
     \centering
@@ -144,7 +161,7 @@ As the report was completing with the given features, it was important to retrie
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.95\textwidth]{./content/img/SprintReviewSlides.png}
+    \includegraphics[width=.80\textwidth]{./content/img/SprintReviewSlides.png}
     \caption{Slides used during the Scrum review to present the implemented Power BI data quality monitoring solution and collect feedback for further development.}
     \label{fig:sprint_review}
 \end{figure}
@@ -157,7 +174,7 @@ After the review further feedback was collected in separate sessions. The stakeh
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.90\textwidth]{./content/img/FeedbackMeeting_AfterReview.png}
+    \includegraphics[width=0.80\textwidth]{./content/img/FeedbackMeeting_AfterReview.png}
     \caption{Miro board documenting stakeholder feedback collected during a review meeting together with the implementation status of the resulting improvement actions.}
     \label{fig:stakeholder_feedback_miro}
 \end{figure}

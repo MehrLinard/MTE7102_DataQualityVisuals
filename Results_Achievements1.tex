@@ -1,0 +1,40 @@
+\section{SMART goal 1: Identification of initial data quality metrics}
+\subsection*{Goal definition}
+\textbf{1) Identification of initial data quality metrics}
+    
+\textbf{WHY:} Defining measurable data quality terms. This helps to ensure that checks focus on business-relevant issues.
+
+By the end of the analysis phase, the initial data quality measures suitable for automated projects in the DWH LS OPS environment are identified and defined. At least three dimensions should be covered, such as completeness and consistency.
+
+Success is measured by the documented metrics, which include a specific metric definition with calculation logic, data scope, and business relevance.
+
+
+
+\subsection*{Core results}
+\begin{itemize}
+    
+\item \textbf{Key value identification:} In the implementation chapter, the quality metrics of submitted and discharged, in conjunction with the difference between the two (\textbf{Diff\_Discharged\_Submitted}), are identified. These metrics represent the key values used to evaluate the daily completeness of data (Section \ref{Implementation1SubmittedDischargedDifference}).
+
+\item \textbf{Query simplification:} At the end of the implementation chapter, these metrics are formalised into rule checks. The first result was the reduction of the large reporting view query to focus on the MVP, as described in Section \ref{ImplementationAthenaQueryReduction}.
+
+\item \textbf{Setup of a general rule:} Next, the rule derived from the business report was formalised into pseudocode. First, the current business-driven check was described. Then, a generalised rule setup was illustrated using pseudocode. The generalised version contains two threshold checks and a relative comparison between submitted and discharged values, as described in Section \ref{ImplementationDeriveGeneralisableRules}.
+
+\item \textbf{Implementation documentation:} Finally, a mind map describing the SQL query content and its columns was created, distinguishing between identifiers (date, sorting center code) and the DQM core values (submitted, discharged, and their difference). In addition, a rule map visualises the different checks and how the two threshold checks prepare the relative difference threshold check. These visualisations are provided in Section \ref{ImplementationPrepareForNextProj}.
+\end{itemize}
+
+\subsection*{Supporting results}
+The following results support the later implementation steps:
+\begin{itemize}
+    \item In the research chapter, the definition of data quality checks is provided in Section \ref{ResearchWhatIsDQ}. The relevant dimensions are identified as completeness, accuracy, consistency, and timeliness. This description is sufficient, as the definitions are already established at Swiss Post according to \cite{iso_iec_25012}.
+
+    \item In the solution architecture, the metrics are reflected in the definitions of the relevant submitted and discharged events, as described in Sections \ref{SolutionSubmittedEvent} and \ref{SolutionDischargedEvent}.
+\end{itemize}
+
+\subsection*{What was not achieved?}
+All goals are fulfilled.
+
+\subsection*{Goal verdict}
+This goal was completely fulfilled. It has a formal definition, and in the implementation the relevant metrics were identified. This is supported by the metric artefacts shown in the core results, namely \textbf{Diff\_Discharged\_Submitted}.
+
+\subsection*{Learning and outlook for future work}
+In the heterogeneous environment of Swiss Post postal services, taking diversity into account and addressing it sufficiently is important. The challenges this diversity poses for analytical reporting and DQM in this area should be defined earlier and with more emphasis. More explicit definitions may help the reader of this document to more easily engage with the topic.
