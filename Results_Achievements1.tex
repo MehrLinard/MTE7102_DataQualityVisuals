@@ -23,16 +23,16 @@ Success is measured by user feedback which has to be retrieved by \gls{ASTV} tea
 
 \item \textbf{Scrum review and after review feedback:} The scrum review showed the report to the whole \gls{ASTV} team and was a valuable means to get feedback. Further feedback was retrieved in separate meetings which was in turn applied. Resulting into the final version of the report beeing brought into production environment.
 
-\item \textbf{New view Athena:} During the implementation of the report in Power BI, a separate view was setup in Athena. This new view allowed to use the new data sources while the old view was not touched and the two were not entangled.
-
-
-
+\item \textbf{New view Athena, and applied DevOps:} During the implementation of the report in Power BI, a separate view was setup in Athena. This new view allowed to use the new data sources while the old view was not touched and the two were not entangled. In addition for the deployment of this new view, the DevOps deployment process at Swiss Post was described and applied.
 \end{itemize}
+
+
+
 
 \subsection*{Supporting results}
 The following results support the later implementation steps:
 \begin{itemize}
-    \item In the research chapter, the definition of data quality checks is provided in Section \ref{ResearchWhatIsDQ}. The relevant dimensions are identified as completeness, accuracy, consistency, and timeliness. This description is sufficient, as the definitions are already established at Swiss Post according to \cite{iso_iec_25012}.
+    \item In the solution landscape chapter, the definition of Power BI as new reporting environment was established. Furthermore the change from wide table to star shema was established.
 
     \item In the solution architecture, the metrics are reflected in the definitions of the relevant submitted and discharged events, as described in Sections \ref{SolutionSubmittedEvent} and \ref{SolutionDischargedEvent}.
 \end{itemize}
@@ -41,7 +41,7 @@ The following results support the later implementation steps:
 All goals are fulfilled.
 
 \subsection*{Goal verdict}
-This goal was completely fulfilled. It has a formal definition, and in the implementation the relevant metrics were identified. This is supported by the metric artefacts shown in the core results, namely \textbf{Diff\_Discharged\_Submitted}.
+This goal was completely fulfilled. It has the report has been implemented including applying the feedback of the stakeholders.
 
 \subsection*{Learning and outlook for future work}
-In the heterogeneous environment of Swiss Post postal services, taking diversity into account and addressing it sufficiently is important. The challenges this diversity poses for analytical reporting and DQM in this area should be defined earlier and with more emphasis. More explicit definitions may help the reader of this document to more easily engage with the topic.
+In the importance of running checks between different environments from the first day of development. This is due to the issues that occured with the different environment of Power BI. Furthermore it's important to get the feedback of the stakeholders as soon as possible and plan enough time for the implementation of their requests.
