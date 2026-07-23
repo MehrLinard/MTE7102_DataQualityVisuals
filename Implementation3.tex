@@ -22,10 +22,39 @@ As the AWS modernisation team was developing this functionality, knowledge trans
 First, a measurable use case had to be identified. Based on the DQM test and the dashboard created in SMART Goal 1, the daily event count was selected as the example. The existing basic monitoring code was able to perform a row count. However, the query used for the dashboard returned daily counts per sorting centre. For testing purposes, the existing monitoring code had to be used. Therefore, the SQL query had to be adapted so that, instead of returning counts per sorting centre, it returned the number of events for a defined sorting centre and date.
 
 
+\subsection*{Testing and Creating a View for Testing}
 
-\subsection*{Testing and creating a view for testing}
+The first attempt was to return all applicable events while removing only the daily counts from the query. As this resulted in time-outs in \gls{athena}, the query had to be redesigned. Consequently, several attempts were made to reduce the amount of data processed. This process continued until only a single event was checked. The resulting query after this initial testing can be found in Appendix \ref{newMonitoringDQMquery}. As with the previous view queries, this query also had to be committed to the corresponding GitHub repository. The following shows a short part of the query, showing the submitted event that is extracted but not counted in the view.
 
-The first attempt was to return all applicable events while removing only the daily counts from the query. As this resulted in time-outs in \gls{athena}, the query had to be redesigned. Consequently, several attempts were made to reduce the amount of data processed. This process continued until only a single event was checked. The resulting query after this initial testing can be found in Appendix \ref{newMonitoringDQMquery}. As with the previous view queries, this query also had to be committed to the corresponding GitHub repository.
+\begin{lstlisting}[style=sqlstyle]
+
+
+, mp_submitted_raw AS (
+   SELECT
+     CAST(DATE_ADD('hour', -6, submitted.timestamp AT TIME ZONE 'Europe/Zurich') AS DATE) Posttag
+   , submitted.sortingunit.locationKey locationKey
+   , submitted.sortingProcess sortingProcess
+   FROM
+     curated_lsops.mailpiece_submitted_v2
+) 
+, mp_submitted AS (
+   SELECT
+     Posttag Posttag
+   , locationKey locationKey
+   , (CASE WHEN ((locationKey = 'HRK') AND (sortingProcess = 'AUTOMATIC')) THEN 1 
+   WHEN ((locationKey = 'VET') AND (sortingProcess = 'AUTOMATIC')) THEN 1 
+   WHEN ((locationKey = 'CAD') AND (sortingProcess = 'AUTOMATIC')) THEN 1 
+   WHEN ((locationKey = 'WAL') AND (sortingProcess = 'AUTOMATIC')) THEN 1 
+   WHEN ((locationKey = 'UTZ') AND (sortingProcess = 'AUTOMATIC')) THEN 1 
+   WHEN ((locationKey = 'PRA') AND (sortingProcess = 'AUTOMATIC')) THEN 1 
+   WHEN (locationKey IN ('BCH', 'RUE', 'OMU')) THEN 1 
+   WHEN (locationKey IN ('HAE', 'FRA', 'DAI', 'URD')) THEN 1 
+   ELSE 0 END) relevant_submitted
+   FROM
+     mp_submitted_raw
+) 
+
+\end{lstlisting}
 
 
 

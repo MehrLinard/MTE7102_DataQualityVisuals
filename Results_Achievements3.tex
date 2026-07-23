@@ -9,62 +9,39 @@ By the end of the implementation phase, the DQM tool has to be tested for applic
 Success is measured by having the DQM tool tested. The tool must return the test values to prove that it can be used for the follow-up master thesis.
 
 
-\subsection*{Core results}
+
+\subsection*{Core Results}
+
 \begin{itemize}
     
-\item \textbf{Business report documentation:} The business report for message processing DQM was documented. The key information was identified as \textbf{Diff\_Discharged\_Submitted}. Both submitted and discharged values should be in the same number range, as this check serves to ensure data completeness. This is because every mail piece in a sorting center has one submitted and one discharged event count per day, as the machines are empty at the end of every day. Therefore, the difference between these values needs to be below the threshold of 0.01. This is described in section \ref{Implementation1SubmittedDischargedDifference}.
+\item \textbf{Knowledge transfer sessions:} The knowledge transfer sessions took place through extensive documentation in Confluence. Additionally, the consultants who developed the solution provided online sessions during which the functioning of the monitoring tool was described.
 
-\item \textbf{Key value identification:} In the implementation chapter, the quality metrics of submitted and discharged, in conjunction with the difference between the two (\textbf{Diff\_Discharged\_Submitted}), were identified. These metrics represent the key values used to evaluate the daily completeness of data (Section \ref{Implementation1SubmittedDischargedDifference}).
+\item \textbf{Design of a measurable use case:} The setup of a measurable use case was a key step towards testing the tool. The test was set up based on the existing query and therefore only had to be changed to fit the requirements.
 
-\item \textbf{SAC report documentation:} The report information relevant to the MVP was identified, including the date, three-letter location key, submitted number, discharged number, and their ratio, and was documented in section \ref{sectionSVADQMReport}.
+\item \textbf{Testing and creating a view for testing:} The new view was designed to have a good response time. This required multiple redesigns of the query, which was ultimately shortened so that it only contained one event being checked for one sorting centre.
 
-\item \textbf{DSP data model description:} Within the DSP, the data lineage of the entire report was examined. A key finding was the location where the ratio is calculated, namely within the DSP data model. Furthermore, it was identified that the data for the MVP case is based solely on AWS Athena; see section \ref{ImplementationInvestigateDSP}.
+\item \textbf{Creating new resources:} While testing the tool, new resources had to be created. These were created using Terraform scripts, which are the Swiss Post standard for managing infrastructure as code.
 
-\item \textbf{Business stakeholder confirmation:} The AWS Athena query was traced, and during a meeting with the stakeholders, the key information was confirmed. This is described in section \ref{ImplementationFourBusinessMeeting}.
-
-\item \textbf{AWS Athena query:} A concise analysis of the query structure and the AWS Athena–specific SQL was conducted, identifying the first relevant components. Finally, documentation was created and presented to the DQM team, as described in section \ref{subsectionAthenaQuery}.
-
-\item \textbf{DQM team update:} To update the DQM team, the data lineage from the AWS Athena query, including relevant accounts, was documented. This includes a brief introduction to the use case and the query for the MVP in section \ref{ImplementationFourConfluenceDocu}. The meeting is documented in appendix \ref{apendixDQM1911}.
-
+\item \textbf{Code execution testing:} The code testing led to the discovery of an error in the tool and how it handled date conditions. This was reported to the AWS Modernisation team, which in turn fixed the bug. This led to the successful execution of the code and the retrieval of results by the monitoring software setup.
 \end{itemize}
 
-\subsection*{Supporting results}
+
+\subsection*{Supporting Results}
 
 \begin{itemize}
-\item \textbf{Data lineage description:} The data lineage was described from: \textit{1) the physical data source:} scans are performed on parcels by different scanners, \textit{2) the initial data storage:} the scan events are first saved in AWS S3, \textit{3) Kafka ingestion:} Apache Kafka ingests the events into a topic, \textit{4) data delivery to DWH:} Apache Kafka is consumed by DWH LS OPS, where the data is saved to the raw layer. This is described in Section \ref{SolutionDataLineage}.
-
-\item \textbf{Reporting pipeline description:} The reporting pipeline of DWH LS OPS is defined as the \textbf{storage layer} using Amazon S3, followed by the \textbf{query and processing layer} using Amazon Athena and SAP Datasphere (DSP), and finally the \textbf{consumption layer} using SAP Analytics Cloud (SAC). These steps are detailed in Section \ref{SolutionReportingPipeline}.
-
-\item \textbf{Placement of data quality:} Data quality checks are best placed on the processing and transformation layer. This allows both meaningful and effective tests. Earlier checks on the data lineage and reporting pipeline are less effective, as only global data completeness can be verified, while later checks on the reporting layer remove the possibility of corrective action. This is described in Section \ref{ResearchDataQChecksOnDataLifecycle}.
-
-\item \textbf{Key value identification:} In the implementation chapter, the quality metrics of submitted and discharged events, in conjunction with the difference between the two (\textbf{Diff\_Discharged\_Submitted}), are identified. These metrics represent the key values used to evaluate the daily completeness of data (Section \ref{Implementation1SubmittedDischargedDifference}).
+\item \textbf{DQM tool testing:} The basis for planning the test was described in the solution architecture. The main steps are knowledge buildup, tool testing, and test design.
 \end{itemize}
 
-\subsection*{What was not achieved?}
+\subsection*{What Was Not Achieved?}
 
 The goal was completely fulfilled; nothing was left unachieved.
 
+\subsection*{Goal Verdict}
 
-\subsection*{Goal verdict}
-This goal was completely fulfilled. All required deliverables have been provided for this SMART goal.
-These include:
-\begin{multicols}{2}
-\begin{itemize}
-    \item \textbf{Supporting} Data lineage description
-    \item \textbf{Supporting} Reporting pipeline description
-    \item \textbf{Supporting} Placement of data quality
-    \item \textbf{Supporting} Key value identification    
-    \item \textbf{Core} Business report documentation
-    \item \textbf{Core} Key value identification
-    \item \textbf{Core} SAC report documentation
-    \item \textbf{Core} DSP data model description
-    \item \textbf{Core} Business stakeholder confirmation
-    \item \textbf{Core} AWS Athena query 
-    \item \textbf{Core} DQM team update
-\end{itemize}
-\end{multicols}
+This goal was successfully achieved using the given use case. Thus, the master thesis can use this tool as a basis for entering the topic.
 
 
-\subsection*{Learning and outlook for future work}
 
-This allowed the identification of the key measurements for DQM. As this SMART goal was fully successful, no further learnings are carried forward to subsequent projects, aside from the tools SAC and DSP, which were examined in detail during their fulfillment.
+\subsection*{Learning and Outlook for Future Work}
+
+An important lesson learned here is the importance of early meetings with the developers of new tools. In the case of AWS Modernisation, the developers were only available until before the end of this project's timeline, so meetings had to be reserved early. Also important was early testing, which led to the discovery of a bug that was in turn fixed by the consultants rather than having to be debugged and fixed later by the project team. Furthermore, the importance of allowing enough time for the setup of the infrastructure must be taken into account during planning.
