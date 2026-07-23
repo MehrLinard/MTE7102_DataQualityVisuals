@@ -13,13 +13,20 @@ Success is measured by user feedback which has to be retrieved by \gls{ASTV} tea
 \subsection*{Core results}
 \begin{itemize}
     
-\item \textbf{Key value identification:} In the implementation chapter, the quality metrics of submitted and discharged, in conjunction with the difference between the two (\textbf{Diff\_Discharged\_Submitted}), are identified. These metrics represent the key values used to evaluate the daily completeness of data (Section \ref{Implementation1SubmittedDischargedDifference}).
+\item \textbf{Update of data source:} In the implementation chapter, the data source for the third party checks was moved from beeing stored on a shared drive to beeing on sharepoint with a synchronisation onto \gls{AWSS3}. By this the data is versioned and available for other usage.
 
-\item \textbf{Query simplification:} At the end of the implementation chapter, these metrics are formalised into rule checks. The first result was the reduction of the large reporting view query to focus on the MVP, as described in Section \ref{ImplementationAthenaQueryReduction}.
+\item \textbf{Power BI Setup:} At the beginning of the implementation chapter, the setup of Power BI was performed. It used the existing guides of Swiss Post, and allowed in turn to start the development of the new improved \gls{DQM} report.
 
-\item \textbf{Setup of a general rule:} Next, the rule derived from the business report was formalised into pseudocode. First, the current business-driven check was described. Then, a generalised rule setup was illustrated using pseudocode. The generalised version contains two threshold checks and a relative comparison between submitted and discharged values, as described in Section \ref{ImplementationDeriveGeneralisableRules}.
+\item \textbf{Model data setup:} The data setup done trough out the course of the implementation chapters first section setup a model which was extentable. And allowed the usage of filters to be applied on all the data.
 
-\item \textbf{Implementation documentation:} Finally, a mind map describing the SQL query content and its columns was created, distinguishing between identifiers (date, sorting center code) and the DQM core values (submitted, discharged, and their difference). In addition, a rule map visualises the different checks and how the two threshold checks prepare the relative difference threshold check. These visualisations are provided in Section \ref{ImplementationPrepareForNextProj}.
+\item \textbf{New visuals to support faster interpretation by stakeholders:} The new visuals developed, allowed three things. The fast visual check if the data is correct on the four comparisions performed. They allow to see the changes on a timeline using the linechart and finally the table with the data allows the detailed check per day and location to be confirmed.
+
+\item \textbf{Scrum review and after review feedback:} The scrum review showed the report to the whole \gls{ASTV} team and was a valuable means to get feedback. Further feedback was retrieved in separate meetings which was in turn applied. Resulting into the final version of the report beeing brought into production environment.
+
+\item \textbf{New view Athena:} During the implementation of the report in Power BI, a separate view was setup in Athena. This new view allowed to use the new data sources while the old view was not touched and the two were not entangled.
+
+
+
 \end{itemize}
 
 \subsection*{Supporting results}
