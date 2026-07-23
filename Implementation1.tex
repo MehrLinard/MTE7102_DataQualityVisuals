@@ -1,25 +1,23 @@
-
-\section{SMART goal 1: setup of an improved DQM report}
+\section{SMART Goal 1: Setup of an Improved DQM Report}
 
 In Project 1, the groundwork for researching the reporting pipeline was completed. It provided the data lineage and described the underlying issues. Based on this work, an improved report was developed. Research was conducted on how to better highlight the relevant comparisons and help users identify the information more quickly. Additionally, the third-party data source, which was previously copied daily into an Excel file, was improved. The file was moved to SharePoint and is now updated whenever changes are made to \gls{AWSS3}, where it is made available to \gls{athena}. In addition, the selected data underwent a structural change, which is described at the end of this section.
 
 
 
+\subsection*{Update of Data Source}
 
-\subsection*{update of data source}
+The first step towards the new report was to improve one of the data sources used by the report. Part of the data was retrieved from a third-party system by means of an Excel table. The file resided in a shared folder and was not initially archived. As this data source did not change and was required by both the existing SAC report, which had to remain operational, and the new Power BI report, it had to be made available in a way that was accessible to both tools. Changing from a shared folder, which was not accessible to Power BI, to SharePoint was therefore a major improvement, as it added versioning to the file. Furthermore, the \gls{DWHLSOPS} team has an existing method to transfer CSV data from SharePoint to \gls{athena}.
 
-The first step towards the new report was to improve one of the data sources used by the report. Part of the data was retrieved from a third-party system by means of an Excel table. The file resided in a shared folder and was not initially archived. As this data source did not change and was required by both the existing SAC report, which had to remain operational, and the new Power BI report, it had to be made available in a way that was accessible to both tools. Changing from a shared folder, which was not accessible to Power BI, to SharePoint was therefore a major improvement, as it added versioning to the file. Furthermore, the \gls{DWHLSOPS} team has an existing method to transfer .csv data from SharePoint to \gls{athena}.
+Therefore, the destination of the Excel file was updated in collaboration with the business users responsible for the manual maintenance of the Excel file. With this change in place, the first data source was made available to Power BI, and all versions of it were from then on stored in \gls{AWSS3}.
 
-Therefore, the destination of the Excel file was updated in collaboration with the business users responsible for the manual maintenance of the Excel file. With this change in place, the first data source was made available to Power BI, and all versions of it were from then on stored on \gls{AWSS3}.
+The groundwork for such an interface was already available, as the \gls{DWHLSOPS} team had implemented it previously \cite{Bosek2026_SharePointS3}. As can be seen in the following screenshot, the project team only had to set the file folder in the existing file structure, and the file was automatically transferred into \gls{AWSS3} and then made available for querying.
 
-
-Todo:
-Show link to guides
-Show issues that happened during transfer
-The excel was not an xlsx but xls
-
-
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./content/img/SharePointToAWSS3.png}
+    \caption{Schematic overview of the interface used to transfer Excel files from Microsoft SharePoint to AWS S3 for automated ingestion into the reporting platform}
+    \label{fig:sharepoint_to_s3_interface}
+\end{figure}
 
 \subsection*{Setup of Power BI}
 
