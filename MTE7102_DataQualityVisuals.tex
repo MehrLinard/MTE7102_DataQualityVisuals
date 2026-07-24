@@ -135,6 +135,11 @@
 \makeglossaries
 \input{glossary}
 
+% Prevent chapters and chapter-like elements from forcing odd pages
+\KOMAoptions{open=any}
+
+% Treat \cleardoublepage like a normal page break
+\let\cleardoublepage\clearpage
 
 \begin{document}
 
