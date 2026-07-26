@@ -64,9 +64,12 @@ By the end of 2025, the \gls{DQM} team set up a PoC of the rule check engine bas
 
 
 
-\section{Heterogenous sorting center environments}
+\section{Heterogeneous Sorting Centre Environments}
 \label{SolutionLandscapeMultHardWlayouts}
-Before turning to the data lineage, an important constraint must be highlighted. The hardware used by Swiss Post in their high-tech “cyber” postal sorting centers differs in two main ways: across different providers and across different sizes and organisational structures of sorting centers. Which, in turn, also led to a diversity of processes to perform similar actions. This diversity on different levels brings certain benefits but also introduces additional synchronisation effort in other areas.
+
+Before turning to the data lineage, an important constraint must be highlighted. The hardware used by Swiss Post in its high-tech "cyber" postal sorting centres differs in two main ways: across different providers and across different sizes and organisational structures of sorting centres. This, in turn, also led to a diversity of processes for performing similar actions. This diversity at different levels brings certain benefits but also introduces additional synchronisation effort in other areas.
+
+
 
 \subsection*{Different sorting hardware providers}
 The hardware used by Swiss Post in its sorting centers is sourced from different providers. This is an essential risk management measure to reduce dependency on a single vendor. To mitigate this risk, Swiss Post decided to rely on at least two providers for essential hardware, not only to avoid dependency but also to protect against delivery issues or even the bankruptcy of individual providers. From a risk management perspective, this approach supports business continuity. However, from an IT perspective, it introduces challenges, as different hardware providers deliver data in different formats or with varying characteristics.
@@ -182,14 +185,23 @@ This is relevant for Swiss Post, as Amazon S3 serves as the central storage for 
 It is important to note that the data is not only initially saved to Amazon S3 in a raw layer, but is also cleaned and prepared for reporting in two additional layers. To separate the storage of raw data from the cleaning process, multiple layers are used. This ensures that all data in its original format is saved first before processing, modification, augmentation, and checks for completeness or correctness are performed. Each step can therefore be reproduced and repeated, which is useful whenever data needs to be reloaded, for example when data was incomplete for a day or when new processing methods are developed.
 After the raw layer, data is deduplicated and cleaned, and then saved into the curated layer. The final top layer, the reporting layer, mainly adds translations of fields into business terminology, for example by changing column labels. This is useful for the business, as it enables consistent naming of columns across tables or data products. 
 
+
+
 \paragraph{Infoblock}
 \label{SolutionLandscapeInfoblock}
-On this level \gls{infoblock}'s are generated, this is a Swiss Post internal term used for report ready data products. An infoblock is cleaned, deduplicated, curated data which features joined datasets that use business naming, e.g. \gls{postday} and processing, priority types. Basically the infoblocks are the final layer employed on the reporting layer, making them accessible to the reporting tools such as \gls{DSP} and \gls{SAC}, which are described in detail below. A more comon term for infoblock know trough out the industry is data product  \cite{alation_data_product, ibm_data_product}. 
 
-\subsubsection*{AWS Athena query}
+On this level, \glspl{infoblock} are generated. This is a Swiss Post internal term used for report-ready data products. An infoblock consists of cleaned, deduplicated, curated data featuring joined datasets that use business naming, e.g. \gls{postday} and processing priority types. Basically, the infoblocks are the final layer employed in the reporting layer, making them accessible to reporting tools such as \gls{DSP} and \gls{SAC}, which are described in detail below. A more common term for an infoblock known throughout the industry is \textit{data product} \cite{alation_data_product, ibm_data_product}.
+
+
+
+\subsubsection*{AWS Athena Query}
 \label{SolutionAthenaQuery}
-The next step is Amazon Athena as the query layer, which Amazon describes as follows: \textit{ “Amazon Athena is an interactive query service that makes it easy to analyze data directly in Amazon Simple Storage Service (Amazon S3) using standard SQL. With a few actions in the AWS Management Console, you can point Athena at your data stored in Amazon S3 and begin using standard SQL to run ad-hoc queries and get results in seconds. “ \cite{aws_athena_docs}.}
-Amazon Athena is used by Swiss Post DWH LS OPS for all queries on Amazon S3, which is the next step in the reporting pipeline. Athena is the tool designed by AWS for use with S3, making it the logical choice for querying the stored data. The data is queried for reporting purposes by selecting the relevant subsets.
+
+The next step is Amazon Athena as the query layer, which Amazon describes as follows: \textit{“Amazon Athena is an interactive query service that makes it easy to analyze data directly in Amazon Simple Storage Service (Amazon S3) using standard SQL. With a few actions in the AWS Management Console, you can point Athena at your data stored in Amazon S3 and begin using standard SQL to run ad-hoc queries and get results in seconds.” \cite{aws_athena_docs}}
+
+Amazon Athena is used by Swiss Post DWH LS OPS for all queries on Amazon S3, which is the next step in the reporting pipeline. Athena is the tool designed by AWS for use with Amazon S3, making it the logical choice for querying the stored data. The data is queried for reporting purposes by selecting the relevant subsets.
+
+
 
 \paragraph{DQM relevance}
 The querying layer is relevant to DQM, since data quality issues may become apparent first at this earliest checkpoint, for example when errors occur in the data itself and counts or joins become invalid. While the data is queried at this layer for reporting purposes, it is also queried here for data quality checks. Such checks typically address missing data and data completeness, but can also extend to data plausibility, for example when postal codes are compared to cities. In cases where issues occur at this layer, they are passed downstream towards DSP and SAC, provided they do not already break the pipeline at this stage.

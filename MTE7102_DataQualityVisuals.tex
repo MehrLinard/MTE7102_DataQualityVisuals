@@ -51,6 +51,7 @@
 % for style of sql text to show correct code highlighting
 \usepackage{listings}
 \usepackage{xcolor}
+
 \lstdefinestyle{sqlstyle}{
   language=SQL,
   basicstyle=\ttfamily\small,
@@ -58,8 +59,22 @@
   commentstyle=\color{gray},
   stringstyle=\color{red},
   showstringspaces=false,
-  frame=single
+  frame=single,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  prebreak=\mbox{\textcolor{gray}{$\hookleftarrow$}\space},
+  postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+  xleftmargin=0pt,
+  xrightmargin=0pt,
+  framexleftmargin=4pt,
+  framexrightmargin=4pt
 }
+
+
+
+
 \lstdefinelanguage{json}{
     basicstyle=\ttfamily\small,
     numbers=none,
@@ -85,6 +100,84 @@
       {\}}{{{\color{black}{\}}}}}{1}
       {[}{{{\color{black}{[}}}}{1}
       {]}{{{\color{black}{]}}}}{1}
+}
+
+
+
+% Terraform syntax highlighting
+\lstdefinelanguage{Terraform}{
+  morekeywords={
+    terraform,
+    required_version,
+    required_providers,
+    provider,
+    resource,
+    data,
+    variable,
+    output,
+    locals,
+    module,
+    backend,
+    source,
+    version,
+    type,
+    default,
+    description,
+    sensitive,
+    depends_on,
+    count,
+    for_each,
+    lifecycle,
+    dynamic,
+    content,
+    true,
+    false,
+    null
+  },
+  sensitive=true,
+  morecomment=[l]{\#},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]"
+}
+
+
+\lstdefinestyle{terraformstyle}{
+  language=Terraform,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  stringstyle=\color{blue},
+  commentstyle=\color{gray},
+  numbers=none,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{black},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  literate=
+   *{0}{{{\color{magenta}0}}}{1}
+    {1}{{{\color{magenta}1}}}{1}
+    {2}{{{\color{magenta}2}}}{1}
+    {3}{{{\color{magenta}3}}}{1}
+    {4}{{{\color{magenta}4}}}{1}
+    {5}{{{\color{magenta}5}}}{1}
+    {6}{{{\color{magenta}6}}}{1}
+    {7}{{{\color{magenta}7}}}{1}
+    {8}{{{\color{magenta}8}}}{1}
+    {9}{{{\color{magenta}9}}}{1}
+    {:}{{{\color{black}{:}}}}{1}
+    {,}{{{\color{black}{,}}}}{1}
+    {\{}{{{\color{black}{\{}}}}{1}
+    {\}}{{{\color{black}{\}}}}}{1}
+    {[}{{{\color{black}{[}}}}{1}
+    {]}{{{\color{black}{]}}}}{1}
+    {=}{{{\color{black}{=}}}}{1}
 }
 
 % for cite different apearance
