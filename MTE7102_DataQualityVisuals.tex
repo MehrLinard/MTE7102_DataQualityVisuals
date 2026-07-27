@@ -1,7 +1,9 @@
 %============================ MAIN DOCUMENT ================================
 % define document class
 \documentclass[
-	a4paper               % paper format
+	class=report,
+	a4paper,               % paper format
+	twoside=false,
 	open=any, % Chapters start on even and uneven pages, remove for print
 %	,10.5pt               % fontsize
 %	,BCOR=18mm            % Binding correction
@@ -228,11 +230,14 @@
 \makeglossaries
 \input{glossary}
 
-% Prevent chapters and chapter-like elements from forcing odd pages
 \KOMAoptions{open=any}
 
-% Treat \cleardoublepage like a normal page break
+% Prevent blank pages inserted for odd/even page alignment
+\makeatletter
 \let\cleardoublepage\clearpage
+\let\cleardoubleoddpage\clearpage
+\let\cleardoubleevenpage\clearpage
+\makeatother
 
 \begin{document}
 
